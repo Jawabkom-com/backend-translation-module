@@ -6,7 +6,8 @@ RUN apt -y install php8.0
 RUN apt -y install php8.0-mysql
 RUN apt-get -y install php8.0-xml
 RUN apt-get -y install php8.0-mbstring
-
+RUN apt-get update -y && apt-get install -y php-curl
+RUN apt install -y php8.0-sqlite3
 #
 # Install composer
 #
