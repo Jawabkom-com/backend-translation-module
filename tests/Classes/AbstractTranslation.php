@@ -1,10 +1,8 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Translation;
+namespace Jawabkom\Backend\Module\Translation\Test\Classes;
 
 use Illuminate\Database\Eloquent\Model;
-use Jawabkom\Backend\Module\Translation\Database\Factories\TranslationFactory;
-use Jawabkom\Standard\Contract\IEntity;
 
 abstract class AbstractTranslation extends Model
 {

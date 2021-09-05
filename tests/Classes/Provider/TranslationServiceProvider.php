@@ -3,6 +3,8 @@
 namespace Jawabkom\Backend\Module\Translation\Test\Classes\Provider;
 
 use Illuminate\Support\ServiceProvider;
+use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
+use Jawabkom\Backend\Module\Translation\Test\Classes\TranslationRepository;
 
 class TranslationServiceProvider extends ServiceProvider
 {
@@ -14,7 +16,7 @@ class TranslationServiceProvider extends ServiceProvider
     public function register()
     {
         $toBind = [
-            TranslationRepository::class => Translation::class,
+            ITranslationRepository::class => TranslationRepository::class,
         ];
 
         foreach ($toBind as $interface => $implementation) {
@@ -26,7 +28,7 @@ class TranslationServiceProvider extends ServiceProvider
     {
         $this->loadMigrations();
         $this->loadConfig();
-        $this->loadRoutes();
+     //   $this->loadRoutes();
     }
 
     private function loadMigrations(): void
@@ -35,7 +37,7 @@ class TranslationServiceProvider extends ServiceProvider
     }
 
     public function loadConfig(){
-        $this->mergeConfigFrom(__DIR__ . '/../Config/config.php','jawabAdmin');
+        $this->mergeConfigFrom(__DIR__ . '/../../Config/config.php','jawabAdmin');
     }
 
     private function loadRoutes(): void
@@ -56,7 +58,7 @@ class TranslationServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()){
             $this->publishes([
-                __DIR__ . '/../Config/config.php' =>config('jawabAdmin')
+                __DIR__ . '/../../Config/config.php' =>config('jawabAdmin')
             ],'config');
         }
     }

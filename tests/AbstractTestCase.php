@@ -2,7 +2,7 @@
 
 namespace Jawabkom\Backend\Module\Translation\Test;
 
-use Jawabkom\Backend\Module\Translation\Provider\TranslationServiceProvider;
+use Jawabkom\Backend\Module\Translation\Test\Classes\Provider\TranslationServiceProvider;
 use Orchestra\Testbench\TestCase as TestCaseAlisa;
 
 class AbstractTestCase extends TestCaseAlisa

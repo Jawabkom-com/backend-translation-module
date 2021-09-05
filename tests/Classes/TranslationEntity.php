@@ -2,7 +2,6 @@
 
 namespace Jawabkom\Backend\Module\Translation\Test\Classes;
 
- use Jawabkom\Backend\Module\Translation\AbstractTranslation;
  use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
  use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
 
