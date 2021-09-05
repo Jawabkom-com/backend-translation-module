@@ -17,6 +17,7 @@ class AddBulkTranslations extends AbstractService {
 
     public function process(): static
     {
+        
         return $this;
     }
 }

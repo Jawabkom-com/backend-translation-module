@@ -10,7 +10,7 @@ class AddNewTranslation extends AbstractService {
 
     private ITranslationRepository $translationRepository;
 
-    public function __construct(ITranslationRepository $translationRepository,)
+    public function __construct(ITranslationRepository $translationRepository)
     {
         $this->translationRepository = $translationRepository;
     }
