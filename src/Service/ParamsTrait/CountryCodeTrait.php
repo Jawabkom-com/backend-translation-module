@@ -11,5 +11,6 @@ trait CountryCodeTrait
      */
     public function setCountryCode(string $countryCode=''):static{
         $this->countryCode = $countryCode;
+        return $this;
     }
 }

@@ -10,12 +10,12 @@ class TranslationRepository extends AbstractTranslation implements ITranslationR
 {
     public function createEntity(array $params=[]): TranslationEntity
     {
-      return $this->model->create($params);
+     return app()->make(ITranslationEntity::class);
     }
 
     public function saveEntity(ITranslationEntity|IEntity $entity): bool
     {
-      return $this->model->save($entity);
+      return $entity->save();
     }
 
 }

@@ -10,6 +10,7 @@ class CreateTranslationTable extends Migration
 {
     public function up(){
         Schema::create('translations',function (Blueprint $table){
+            $table->id();
             $table->string('key')->index();
             $table->string('value')->index();
             $table->string('language_code')->index();

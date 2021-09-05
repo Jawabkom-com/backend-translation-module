@@ -2,7 +2,6 @@
 
 namespace Jawabkom\Backend\Module\Translation\Service;
 
-use Jawabkom\Backend\Module\Translation\Contract\ITranslation;
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
 use Jawabkom\Backend\Module\Translation\Service\ParamsTrait\CountryCodeTrait;
 use Jawabkom\Backend\Module\Translation\Service\ParamsTrait\LanguageCodeTrait;
@@ -21,9 +20,8 @@ class AddNewTranslation extends AbstractService {
 
     private ITranslationRepository $translationRepository;
 
-    public function __construct(ITranslationRepository $ITranslationRepository)
+    public function __construct(ITranslationRepository $ITranslationRepository,)
     {
-
         $this->translationRepository = $ITranslationRepository;
     }
     public function vaildtor():void{
@@ -40,13 +38,13 @@ class AddNewTranslation extends AbstractService {
 
     private function createNewTranslationRecord()
     {
-        $newRecord = $this->translationRepository->createEntity('');
-        $newRecord->setCountryCode('');
-        $newRecord->setLanguageCode('');
-        $newRecord->setTranslationGroupName('');
-        $newRecord->setTranslationKey('');
-        $newRecord->setTranslationValue('');
-
-        $this->setOutput('created',$this->translation->Save($newRecord));
+        $newEntity = $this->translationRepository->createEntity();
+        $newEntity->setTranslationValue($this->translationValue);
+        $newEntity->setTranslationKey($this->translationKey);
+        $newEntity->setTranslationGroupName($this->translationGroupName);
+        $newEntity->setLanguageCode($this->languageCode);
+        $newEntity->setCountryCode($this->countryCode);
+        $this->setOutput('newEntity',$newEntity->toArray());
+        $this->setOutput('created',$this->translationRepository->saveEntity($newEntity));
     }
 }

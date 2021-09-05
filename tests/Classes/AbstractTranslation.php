@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class AbstractTranslation extends Model
 {
+    protected $table ='translations';
     protected $fillable =[
         'key',
         'value',

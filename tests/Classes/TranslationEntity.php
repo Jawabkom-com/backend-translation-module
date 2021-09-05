@@ -10,52 +10,52 @@ namespace Jawabkom\Backend\Module\Translation\Test\Classes;
 
      public function setTranslationKey(string $translationKey)
      {
-         $this->translationKey = $translationKey;
+         $this->key = $translationKey;
      }
 
      public function getTranslationKey(): string
      {
-         return $this->translationKey;
+         return $this->key;
      }
 
      public function setLanguageCode(string $language)
      {
-         $this->languageCode = $language;
+         $this->language_code = $language;
      }
 
      public function getLanguageCode(): string
      {
-         return $this->languageCode;
+         return $this->language_code;
      }
 
      public function setCountryCode(string $countryCode)
      {
-         $this->countryCode = $countryCode;
+         $this->country_code = $countryCode;
      }
 
      public function getCountryCode(): string
      {
-         return $this->countryCode;
+         return $this->country_code;
      }
 
      public function setTranslationGroupName(string $groupName)
      {
-         $this->translationGroupName = $groupName;
+         $this->group_name = $groupName;
      }
 
      public function getTranslationGroupName(): string
      {
-         return $this->translationGroupName;
+         return $this->group_name;
      }
 
      public function setTranslationValue(string $translationValue)
      {
-         $this->translationValue = $translationValue;
+         $this->value = $translationValue;
      }
 
      public function getTranslationValue(): string
      {
-         return $this->translationValue;
+         return $this->value;
      }
 
 }

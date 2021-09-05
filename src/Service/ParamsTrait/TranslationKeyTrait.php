@@ -11,7 +11,7 @@ trait TranslationKeyTrait
      */
     public function setTranslationKey(string $translationKey):static
     {
-        $this->translationKey = $translationKey;
+        $this->translationKey = trim(strtolower($translationKey));
         return $this;
     }
 }

@@ -3,7 +3,9 @@
 namespace Jawabkom\Backend\Module\Translation\Test\Classes\Provider;
 
 use Illuminate\Support\ServiceProvider;
+use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
+use Jawabkom\Backend\Module\Translation\Test\Classes\TranslationEntity;
 use Jawabkom\Backend\Module\Translation\Test\Classes\TranslationRepository;
 
 class TranslationServiceProvider extends ServiceProvider
@@ -17,6 +19,7 @@ class TranslationServiceProvider extends ServiceProvider
     {
         $toBind = [
             ITranslationRepository::class => TranslationRepository::class,
+            ITranslationEntity::class     => TranslationEntity::class
         ];
 
         foreach ($toBind as $interface => $implementation) {
