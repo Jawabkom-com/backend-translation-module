@@ -17,6 +17,14 @@ class AddNewTranslationTest extends AbstractTestCase
         $t->language_code='333';
         $t->country_code='444';
         $t->save();
-        $this->assertInstanceOf(Translation::class,$t);
+        $this->assertInstanceOf(i,$t);
     }
+    public function testCreateTranslationKey(){
+
+    }
+
+    public function testTrimKey(){
+
+    }
+
 }

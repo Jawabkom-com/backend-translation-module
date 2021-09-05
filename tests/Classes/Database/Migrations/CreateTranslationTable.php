@@ -1,6 +1,6 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Translation\Database\Migrations;
+namespace Jawabkom\Backend\Module\Translation\Test\Classes\Database\Migrations;
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

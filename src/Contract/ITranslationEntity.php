@@ -4,7 +4,7 @@ namespace Jawabkom\Backend\Module\Translation\Contract;
 
 use Jawabkom\Standard\Contract\IEntity;
 
-interface ITranslation extends IEntity {
+interface ITranslationEntity extends IEntity {
 
     public function setTranslationKey(string $translationKey);
     public function getTranslationKey():string;

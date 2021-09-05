@@ -2,8 +2,10 @@
 
 namespace Jawabkom\Standard\Contract;
 
+use Jawabkom\Backend\Module\Translation\Test\Classes\TranslationEntity;
+
 interface IRepository
 {
-    public function createEntity(array $params):static;
-    public function save(IEntity $entity):bool;
+    public function createEntity(array $params=[]):IEntity;
+    public function saveEntity(IEntity $entity):bool;
 }

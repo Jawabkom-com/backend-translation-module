@@ -2,13 +2,12 @@
 
 namespace Jawabkom\Backend\Module\Translation;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Jawabkom\Backend\Module\Translation\Database\Factories\TranslationFactory;
+use Jawabkom\Standard\Contract\IEntity;
 
-class Translation extends Model
+abstract class AbstractTranslation extends Model
 {
-    use HasFactory;
     protected $fillable =[
         'key',
         'value',
@@ -16,9 +15,4 @@ class Translation extends Model
         'country_code',
         'group_name',
     ];
-
-    protected static function newFactory(): TranslationFactory
-    {
-       return TranslationFactory::new();
-    }
 }

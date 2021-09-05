@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Translation\Service;
 
 use Jawabkom\Backend\Module\Translation\Contract\ITranslation;
+use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
 use Jawabkom\Backend\Module\Translation\Service\ParamsTrait\CountryCodeTrait;
 use Jawabkom\Backend\Module\Translation\Service\ParamsTrait\LanguageCodeTrait;
 use Jawabkom\Backend\Module\Translation\Service\ParamsTrait\TranslationGroupNameTrait;
@@ -17,12 +18,13 @@ class AddNewTranslation extends AbstractService {
     use TranslationValueTrait;
     use TranslationKeyTrait;
 
-    private ITranslation $translation;
 
-    public function __construct(ITranslation $translation)
+    private ITranslationRepository $translationRepository;
+
+    public function __construct(ITranslationRepository $ITranslationRepository)
     {
 
-        $this->translation = $translation;
+        $this->translationRepository = $ITranslationRepository;
     }
     public function vaildtor():void{
         if (!$this->translationKey || !$this->translationValue){
@@ -38,7 +40,7 @@ class AddNewTranslation extends AbstractService {
 
     private function createNewTranslationRecord()
     {
-        $newRecord = $this->translation->createEntity();
+        $newRecord = $this->translationRepository->createEntity('');
         $newRecord->setCountryCode('');
         $newRecord->setLanguageCode('');
         $newRecord->setTranslationGroupName('');
