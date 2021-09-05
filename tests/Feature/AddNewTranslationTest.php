@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Translation\Test\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
 use Jawabkom\Backend\Module\Translation\Service\AddNewTranslation;
 use Jawabkom\Backend\Module\Translation\Test\AbstractTestCase;
 
@@ -29,29 +30,25 @@ class AddNewTranslationTest extends AbstractTestCase
         $key          = 'projectName';
         $value        = 'translationPackage';
 
-        $this->addNewTrans->setCountryCode($countryCode)
-                          ->setLanguageCode($languageCode)
-                          ->setTranslationGroupName($groupName)
-                          ->setTranslationKey($key)
-                          ->setTranslationValue($value)
-                          ->process();
-
-        $result     = $this->addNewTrans->output('created');
-        $this->assertTrue($result);
+        $newEntity =  $this->addNewTrans->input('languageCode',$languageCode)
+                          ->input('countryCode',$countryCode)
+                          ->input('groupName',$groupName)
+                          ->input('translationKey',$key)
+                          ->input('translationValue',$value)
+                          ->process()
+                          ->output('newEntity');
+        $this->assertInstanceOf(ITranslationEntity::class,$newEntity);
     }
 
     public function testCreateNewTransWIthRequiredFieldOnly(){
         $languageCode = 'en';
         $key          = 'projectName';
         $value        = 'translationPackage';
-        $this->addNewTrans->setCountryCode('')
-                          ->setLanguageCode($languageCode)
-                          ->setTranslationGroupName('')
-                          ->setTranslationKey($key)
-                          ->setTranslationValue($value)
-                          ->process();
-        $result     = $this->addNewTrans->output('created');
-        $this->assertTrue($result);
+        $result = $this->addNewTrans->input('languageCode',$languageCode)
+                          ->input('translationKey',$key)
+                          ->input('translationValue',$value)
+                          ->process()->output('newEntity');
+        $this->assertInstanceOf(ITranslationEntity::class,$result);
 
     }
 
@@ -63,13 +60,12 @@ class AddNewTranslationTest extends AbstractTestCase
         $value        = 'translationPackage';
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('this is required filed');
-        $this->addNewTrans->setCountryCode($countryCode)
-                          ->setLanguageCode($languageCode)
-                          ->setTranslationGroupName($groupName)
-                          ->setTranslationKey('')
-                          ->setTranslationValue($value)
-                          ->process();
+        $this->expectExceptionMessage('missing required fields [translationKey*,translationValue*,languageCode*,groupName,countryCode ]');
+        $this->addNewTrans->input('languageCode',$languageCode)
+                           ->input('countryCode',$countryCode)
+                           ->input('groupName',$groupName)
+                           ->input('translationValue',$value)
+                           ->process();
      }
 
     public function testCreateNewTransWIthValueMissing(){
@@ -79,12 +75,11 @@ class AddNewTranslationTest extends AbstractTestCase
         $key          = 'projectName';
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('this is required filed');
-        $this->addNewTrans->setCountryCode($countryCode)
-                          ->setLanguageCode($languageCode)
-                          ->setTranslationGroupName($groupName)
-                          ->setTranslationKey($key)
-                          ->setTranslationValue('')
+        $this->expectExceptionMessage('missing required fields [translationKey*,translationValue*,languageCode*,groupName,countryCode ]');
+        $this->addNewTrans->input('languageCode',$languageCode)
+                          ->input('countryCode',$countryCode)
+                          ->input('groupName',$groupName)
+                          ->input('translationKey',$key)
                           ->process();
     }
 
@@ -94,16 +89,16 @@ class AddNewTranslationTest extends AbstractTestCase
         $groupName    = 'admin';
         $key          = 'ProjectName';
         $value        = 'translationPackage';
-        $this->addNewTrans->setCountryCode($countryCode)
-            ->setLanguageCode($languageCode)
-            ->setTranslationGroupName($groupName)
-            ->setTranslationKey($key)
-            ->setTranslationValue($value)
-            ->process();
-        $result     = $this->addNewTrans->output('created');
-        $this->assertTrue($result);
+        $newEntity = $this->addNewTrans->input('languageCode',$languageCode)
+                           ->input('countryCode',$countryCode)
+                           ->input('groupName',$groupName)
+                           ->input('translationKey',$key)
+                           ->input('translationValue',$value)
+                           ->process()
+                           ->output('newEntity');
+        $this->assertInstanceOf(ITranslationEntity::class,$newEntity);
 
-       $newTrans = $this->addNewTrans->output('newEntity');
+       $newTrans =$newEntity->toArray();
        $this->assertEquals(strtolower($key),$newTrans['key']);
     }
 }

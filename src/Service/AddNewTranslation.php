@@ -3,20 +3,9 @@
 namespace Jawabkom\Backend\Module\Translation\Service;
 
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
-use Jawabkom\Backend\Module\Translation\Service\ParamsTrait\CountryCodeTrait;
-use Jawabkom\Backend\Module\Translation\Service\ParamsTrait\LanguageCodeTrait;
-use Jawabkom\Backend\Module\Translation\Service\ParamsTrait\TranslationGroupNameTrait;
-use Jawabkom\Backend\Module\Translation\Service\ParamsTrait\TranslationKeyTrait;
-use Jawabkom\Backend\Module\Translation\Service\ParamsTrait\TranslationValueTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 
 class AddNewTranslation extends AbstractService {
-    use CountryCodeTrait;
-    use LanguageCodeTrait;
-    use TranslationGroupNameTrait;
-    use TranslationValueTrait;
-    use TranslationKeyTrait;
-
 
     private ITranslationRepository $translationRepository;
 
@@ -24,14 +13,14 @@ class AddNewTranslation extends AbstractService {
     {
         $this->translationRepository = $ITranslationRepository;
     }
-    public function vaildtor():void{
-        if (!$this->translationKey || !$this->translationValue){
-            throw new \Exception('this is required filed');
+    public function validate():void{
+        if (!$this->getInput('translationKey') || !$this->getInput('translationValue') || !$this->getInput('languageCode')){
+            throw new \Exception('missing required fields [translationKey*,translationValue*,languageCode*,groupName,countryCode ]');
         }
     }
     public function process(): static
     {
-        $this->vaildtor();
+        $this->validate();
         $this->createNewTranslationRecord();
         return $this;
     }
@@ -39,12 +28,14 @@ class AddNewTranslation extends AbstractService {
     private function createNewTranslationRecord()
     {
         $newEntity = $this->translationRepository->createEntity();
-        $newEntity->setTranslationValue($this->translationValue);
-        $newEntity->setTranslationKey($this->translationKey);
-        $newEntity->setTranslationGroupName($this->translationGroupName);
-        $newEntity->setLanguageCode($this->languageCode);
-        $newEntity->setCountryCode($this->countryCode);
-        $this->setOutput('newEntity',$newEntity->toArray());
-        $this->setOutput('created',$this->translationRepository->saveEntity($newEntity));
+        $newEntity->setLanguageCode($this->getInput('languageCode'));
+        $newEntity->setTranslationKey(trim(strtolower($this->getInput('translationKey'))));
+        $newEntity->setTranslationValue($this->getInput('translationValue'));
+        $newEntity->setTranslationGroupName($this->getInput('groupName')??'');
+        $newEntity->setCountryCode($this->getInput('countryCode')??'');
+
+        if ($this->translationRepository->saveEntity($newEntity)){
+            $this->setOutput('newEntity',$newEntity);
+        }
     }
 }
