@@ -15,7 +15,8 @@
             "Jawabkom\\Backend\\Module\\Translation\\": "src/",
             "Jawabkom\\Backend\\Module\\Translation\\Test\\": "tests/",
             "Jawabkom\\Standard\\Abstract\\": "Abstract/",
-            "Jawabkom\\Standard\\Contract\\": "Contract/"
+            "Jawabkom\\Standard\\Contract\\": "Contract/",
+            "Jawabkom\\Standard\\Exception\\": "Exception/"
         }
     },
     "description": "",

@@ -19,9 +19,20 @@ abstract class AbstractService implements IService
         return $this->output[$key] ?? null;
     }
 
+    public function outputs(): array
+    {
+        return $this->output;
+    }
+
     public function input(string $key, mixed $value): static
     {
         $this->input[$key] = $value;
+        return $this;
+    }
+
+    public function inputs(array $inputs):static
+    {
+        $this->input = array_merge($this->input, $inputs);
         return $this;
     }
 

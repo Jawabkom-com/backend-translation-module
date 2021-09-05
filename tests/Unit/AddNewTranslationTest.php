@@ -1,11 +1,12 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Translation\Test\Feature;
+namespace Jawabkom\Backend\Module\Translation\Test\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
 use Jawabkom\Backend\Module\Translation\Service\AddNewTranslation;
 use Jawabkom\Backend\Module\Translation\Test\AbstractTestCase;
+use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class AddNewTranslationTest extends AbstractTestCase
 {
@@ -40,7 +41,7 @@ class AddNewTranslationTest extends AbstractTestCase
         $this->assertInstanceOf(ITranslationEntity::class,$newEntity);
     }
 
-    public function testCreateNewTransWIthRequiredFieldOnly(){
+    public function testCreateNewTransWithRequiredFieldOnly(){
         $languageCode = 'en';
         $key          = 'projectName';
         $value        = 'translationPackage';
@@ -52,15 +53,14 @@ class AddNewTranslationTest extends AbstractTestCase
 
     }
 
-    public function testCreateNewTransWIthKeyMissing(){
+    public function testCreateNewTransWithKeyMissing(){
 
         $countryCode  = 'ps';
         $languageCode = 'en';
         $groupName    = 'admin';
         $value        = 'translationPackage';
 
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('missing required fields [translationKey*,translationValue*,languageCode*,groupName,countryCode ]');
+        $this->expectException(MissingRequiredInputException::class);
         $this->addNewTrans->input('languageCode',$languageCode)
                            ->input('countryCode',$countryCode)
                            ->input('groupName',$groupName)
@@ -74,8 +74,7 @@ class AddNewTranslationTest extends AbstractTestCase
         $groupName    = 'admin';
         $key          = 'projectName';
 
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('missing required fields [translationKey*,translationValue*,languageCode*,groupName,countryCode ]');
+        $this->expectException(MissingRequiredInputException::class);
         $this->addNewTrans->input('languageCode',$languageCode)
                           ->input('countryCode',$countryCode)
                           ->input('groupName',$groupName)
@@ -97,8 +96,6 @@ class AddNewTranslationTest extends AbstractTestCase
                            ->process()
                            ->output('newEntity');
         $this->assertInstanceOf(ITranslationEntity::class,$newEntity);
-
-       $newTrans =$newEntity->toArray();
-       $this->assertEquals(strtolower($key),$newTrans['key']);
+        $this->assertEquals(strtolower($key), $newEntity->getTranslationKey());
     }
 }
