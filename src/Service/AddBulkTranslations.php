@@ -26,7 +26,7 @@ class AddBulkTranslations extends AbstractService {
 
     private function validate()
     {
-        foreach ($this->getInputs() as $record){
+        foreach ($this->getInputs() as $inx => $record){
            if(empty($record['language_code']) ||
               empty($record['key']) ||
               empty($record['value']))
@@ -38,8 +38,21 @@ class AddBulkTranslations extends AbstractService {
 
     private function addBulkTranslation()
     {
-        $insertStatus = $this->translationRepository->insertBulk($this->getInputs());
+        $translation = $this->checkFormat();
+        $insertStatus = $this->translationRepository->insertBulk($translation);
         $this->setOutput('status',$insertStatus);
+    }
+
+    /**
+     * @return array
+     */
+    private function checkFormat(): array
+    {
+       return array_map(function ($ele) {
+            $ele['key'] = strtolower($ele['key']);
+            $ele['country_code'] = empty($ele['country_code']) ? '' : strtoupper($ele['country_code']);
+            return $ele;
+        }, $this->getInputs());
     }
 
 }
