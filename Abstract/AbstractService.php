@@ -41,4 +41,9 @@ abstract class AbstractService implements IService
         return $this->input[$key] ?? null;
     }
 
+    protected function getInputs(): array
+    {
+        return $this->input;
+    }
+
 }

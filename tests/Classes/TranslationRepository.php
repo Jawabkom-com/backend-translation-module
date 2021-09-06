@@ -18,4 +18,12 @@ class TranslationRepository extends AbstractTranslation implements ITranslationR
       return $entity->save();
     }
 
+    public function insertBulk(array $params){
+        return  $this->insert($params);
+    }
+
+    public function getByGroupName(string $groupName): array
+    {
+
+    }
 }

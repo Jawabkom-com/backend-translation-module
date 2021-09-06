@@ -33,7 +33,7 @@ class AddNewTranslation extends AbstractService {
         $newEntity->setTranslationKey(trim(strtolower($this->getInput('translationKey'))));
         $newEntity->setTranslationValue($this->getInput('translationValue'));
         $newEntity->setTranslationGroupName($this->getInput('groupName')??'');
-        $newEntity->setCountryCode($this->getInput('countryCode')??'');
+        $newEntity->setCountryCode(trim(strtoupper($this->getInput('countryCode')??'')));
 
         if ($this->translationRepository->saveEntity($newEntity)){
             $this->setOutput('newEntity',$newEntity);

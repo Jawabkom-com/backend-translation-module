@@ -15,4 +15,5 @@ interface ITranslationRepository extends IRepository {
      * @return ITranslationEntity[]
      */
     public function getByGroupName(string $groupName):array;
+
 }
