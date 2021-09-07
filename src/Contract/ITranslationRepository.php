@@ -14,5 +14,7 @@ interface ITranslationRepository extends IRepository {
     public function getByGroupName(string $groupName):array;
     public function allTranslations():array;
     public function findByKey(string $key): IRepository|ITranslationRepository|null;
+    public function findByGroup(string $key): IRepository|ITranslationRepository|null;
+
 
 }

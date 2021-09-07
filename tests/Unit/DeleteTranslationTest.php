@@ -74,5 +74,28 @@ class DeleteTranslationTest extends AbstractTestCase
         $this->deleteTransService->truncateTranslation()->process();
     }
     //test delete trans by group
+    public function testDeleteTransByGroup(){
+        $countryCode  = 'ps';
+        $languageCode = 'en';
+        $groupName    = 'admin';
+        $key          = 'projectName';
+        $value        = 'translationPackage';
+
+        $newEntity =  $this->addTransService->input('languageCode',$languageCode)
+            ->input('countryCode',$countryCode)
+            ->input('groupName',$groupName)
+            ->input('translationKey',$key)
+            ->input('translationValue',$value)
+            ->process()
+            ->output('newEntity');
+
+        $deleteStatus = $this->deleteTransService->byTransGroup($newEntity->getTranslationGroupName())
+                                                 ->process()
+                                                 ->output('status');
+         $this->assertTrue($deleteStatus);
+        $this->assertDatabaseMissing('translations',[
+            "groupName"=> $groupName
+        ]);
+    }
     //test delete trans by language code
 }

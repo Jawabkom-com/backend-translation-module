@@ -51,4 +51,9 @@ class TranslationRepository extends AbstractTranslation implements ITranslationR
         }
         return true;
     }
+
+    public function findByGroup(string $key): IRepository|ITranslationRepository|null
+    {
+      return $this->where('group_name',$key)->first();
+    }
 }
