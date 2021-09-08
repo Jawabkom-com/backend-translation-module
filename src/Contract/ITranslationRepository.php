@@ -10,12 +10,14 @@ interface ITranslationRepository extends IRepository {
     public function saveEntity(ITranslationEntity|IEntity $entity): bool;
     public function createEntity(array $params = []): IEntity|ITranslationEntity;
 
-
-    public function getByGroupName(string $groupName):array;
     public function allTranslations():array;
     public function findByKey(string $key): IRepository|ITranslationRepository|null;
     public function getByGroup(string $groupName):array|null;
     public function getByLocal(string $local): array|null;
+    public function getByGroupName(string $groupName):array;
 
+    public function deleteEntity():bool;
+    public function truncateTranslations():bool;
 
+    public function updateByKey(array $newValues):bool;
 }

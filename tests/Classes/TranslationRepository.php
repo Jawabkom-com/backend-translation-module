@@ -61,4 +61,12 @@ class TranslationRepository extends AbstractTranslation implements ITranslationR
       return $this->where('language_code',$local)->get()->all();
     }
 
+    public function updateByKey(array $newValues): bool
+    {
+        try {
+            return $this->update($newValues);
+        }catch (\Throwable $exception){
+            return false;
+        }
+     }
 }
