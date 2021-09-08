@@ -99,10 +99,11 @@ class DeleteTranslation extends AbstractService {
     {
         return array_map(function ($record) {
             $idR = $record->id;
-            if ($record->deleteEntity()) {
+            try {
+                $record->deleteEntity();
                 return [$idR => true];
-            } else {
-                return [$idR => false];
+            } catch (\Throwable $exception) {
+                 return [$idR => false];
             }
         }, $records);
     }
