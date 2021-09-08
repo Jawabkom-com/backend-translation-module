@@ -52,8 +52,13 @@ class TranslationRepository extends AbstractTranslation implements ITranslationR
         return true;
     }
 
-    public function findByGroup(string $key): IRepository|ITranslationRepository|null
+    public function getByGroup(string $groupName): array|null
     {
-      return $this->where('group_name',$key)->first();
+      return $this->where('group_name',$groupName)->get()->all();
     }
+    public function getByLocal(string $local): array|null
+    {
+      return $this->where('language_code',$local)->get()->all();
+    }
+
 }
