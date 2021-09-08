@@ -26,18 +26,19 @@ class UpdateTranslationsTest extends AbstractTestCase
 
         $addNewTrans = $this->app->make(AddNewTranslation::class);
         $result = $addNewTrans->input('languageCode',$languageCode)
-            ->input('translationKey',$key)
-            ->input('translationValue',$value)
-            ->process()->output('newEntity');
+                              ->input('translationKey',$key)
+                              ->input('translationValue',$value)
+                              ->process()
+                              ->output('newEntity');
         $this->assertInstanceOf(ITranslationEntity::class,$result);
         $this->assertDatabaseHas('translations',[
             'value'=>$value,
         ]);
 
         $newValue = 'Jawabkom Package';
-        $status   = $this->updateTrans->byKey($key,[
-                        'value'=> $newValue,
-                        ])->process()->output('status');
+        $status   = $this->updateTrans->byKey($key,['value'=> $newValue])
+                                      ->process()
+                                      ->output('status');
         $this->assertTrue($status);
         $this->assertDatabaseHas('translations',[
             'value'=>$newValue,
@@ -46,8 +47,8 @@ class UpdateTranslationsTest extends AbstractTestCase
     //test update not exists trans key
     public function testUpdateTranslationByKeyNotExists(){
         $this->expectException(NotFoundException::class);
-       $this->updateTrans->byKey('testToTest',[
-            'value'=> 'update with not exits key',
-        ])->process()->output('status');
+       $this->updateTrans->byKey('testToTest',['value'=> 'update with not exits key'])
+                         ->process()
+                         ->output('status');
      }
 }

@@ -25,7 +25,7 @@ class TranslationRepository extends AbstractTranslation implements ITranslationR
 
     public function getByGroupName(string $groupName): array
     {
-
+         return  $this->where('group_name',$groupName)->get()->all();
     }
 
     public function findByKey(string $key):IRepository|ITranslationRepository|null
@@ -69,4 +69,25 @@ class TranslationRepository extends AbstractTranslation implements ITranslationR
             return false;
         }
      }
+
+    public function findByValue(string $value): IRepository|ITranslationRepository|null
+    {
+       return $this->where('value',$value)->first();
+    }
+
+    public function setFilter(?string $key = '', ?string $value = '', ?string $local = '', ?string $groupName = '', ?string $countryCode = '', bool $paginate = true, int $perPage = 15)
+    {
+   $builder =  $this->when($key,function ($query,$key){
+                    return $query->where('key',$key);
+                })->when($value,function ($query,$value){
+                     return $query->where('value',$value);
+                })->when($local,function ($query,$local){
+                    return $query->where('language_code',$local);
+                })->when($groupName,function ($query,$groupName){
+                    return $query->where('group_name',$groupName);
+                })->when($countryCode,function ($query,$countryCode){
+                    return $query->where('country_code',$countryCode);
+                 });
+   return  $paginate?$builder->paginate($perPage):$builder->get()->all();
+ }
 }
