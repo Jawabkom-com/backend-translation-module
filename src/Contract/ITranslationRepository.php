@@ -18,6 +18,7 @@ interface ITranslationRepository extends IRepository {
     public function getByGroupName(string $groupName):array;
 
     public function deleteEntity():bool;
+
     public function truncateTranslations():bool;
 
     public function updateByKey(array $newValues):bool;

@@ -77,6 +77,8 @@ class DeleteTranslationTest extends AbstractTestCase
         $this->assertInstanceOf(ITranslationEntity::class,$newEntity);
 
         $this->deleteTransService->truncateTranslation()->process();
+        $this->assertDatabaseCount('translations',0);
+
     }
     //test delete trans by group
     public function testDeleteTransByGroup(){

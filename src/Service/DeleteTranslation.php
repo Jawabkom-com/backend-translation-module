@@ -2,6 +2,7 @@
 
 namespace Jawabkom\Backend\Module\Translation\Service;
 
+use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
 use Jawabkom\Backend\Module\Translation\Test\Classes\TranslationRepository;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Exception\MethodItNotExistsException;
@@ -10,8 +11,11 @@ use Jawabkom\Standard\Exception\NotFoundException;
 
 class DeleteTranslation extends AbstractService {
 
-    private TranslationRepository $translationRepository;
-    public function __construct(TranslationRepository $translationRepository)
+
+    private ITranslationRepository $translationRepository;
+
+
+    public function __construct(ITranslationRepository $translationRepository)
     {
 
         $this->translationRepository = $translationRepository;

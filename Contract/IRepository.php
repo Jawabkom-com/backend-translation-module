@@ -10,4 +10,5 @@ interface IRepository
     public function saveEntity(IEntity $entity):bool;
     public function insertBulk(array $params);
     public function deleteEntity():bool;
+
 }
