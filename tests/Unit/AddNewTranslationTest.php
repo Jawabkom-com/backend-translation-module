@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
 use Jawabkom\Backend\Module\Translation\Service\AddNewTranslation;
 use Jawabkom\Backend\Module\Translation\Test\AbstractTestCase;
+use Jawabkom\Standard\Exception\InputLengthException;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class AddNewTranslationTest extends AbstractTestCase
@@ -97,5 +98,36 @@ class AddNewTranslationTest extends AbstractTestCase
                            ->output('newEntity');
         $this->assertInstanceOf(ITranslationEntity::class,$newEntity);
         $this->assertEquals(strtolower($key), $newEntity->getTranslationKey());
+    }
+    public function testCountryCodeLengthLessThanRequiredLength(){
+        $countryCode  = 'p';
+        $languageCode = 'en';
+        $groupName    = 'admin';
+        $key          = 'ProjectName';
+        $value        = 'translationPackage';
+        $this->expectException(InputLengthException::class);
+         $this->addNewTrans->input('languageCode',$languageCode)
+                           ->input('countryCode',$countryCode)
+                           ->input('groupName',$groupName)
+                           ->input('translationKey',$key)
+                           ->input('translationValue',$value)
+                           ->process()
+                           ->output('newEntity');
+    }
+
+    public function testLanguageCodeInputLengthLessThanRequiredLength(){
+        $countryCode  = 'ps';
+        $languageCode = 'e';
+        $groupName    = 'admin';
+        $key          = 'ProjectName';
+        $value        = 'translationPackage';
+        $this->expectException(InputLengthException::class);
+         $this->addNewTrans->input('languageCode',$languageCode)
+                           ->input('countryCode',$countryCode)
+                           ->input('groupName',$groupName)
+                           ->input('translationKey',$key)
+                           ->input('translationValue',$value)
+                           ->process()
+                           ->output('newEntity');
     }
 }

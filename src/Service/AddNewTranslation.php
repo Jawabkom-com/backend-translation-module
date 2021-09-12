@@ -4,6 +4,7 @@ namespace Jawabkom\Backend\Module\Translation\Service;
 
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
 use Jawabkom\Standard\Abstract\AbstractService;
+use Jawabkom\Standard\Exception\InputLengthException;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class AddNewTranslation extends AbstractService {
@@ -18,6 +19,14 @@ class AddNewTranslation extends AbstractService {
         if (!$this->getInput('translationKey') || !$this->getInput('translationValue') || !$this->getInput('languageCode')){
             throw new MissingRequiredInputException('missing required fields [translationKey*,translationValue*,languageCode*,groupName,countryCode ]');
         }
+        if (strlen(trim($this->getInput('languageCode')))<2){
+            throw new InputLengthException('languageCode length must at least 2 character');
+        }
+
+        if ($this->getInput('countryCode') && strlen(trim($this->getInput('countryCode')))<2){
+            throw new InputLengthException('countryCode length must at least 2 character');
+        }
+
     }
     public function process(): static
     {
