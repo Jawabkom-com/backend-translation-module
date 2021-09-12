@@ -75,7 +75,7 @@ class TranslationRepository extends AbstractTranslation implements ITranslationR
        return $this->where('value',$value)->first();
     }
 
-    public function setFilter(?string $key = '', ?string $value = '', ?string $local = '', ?string $groupName = '', ?string $countryCode = '', bool $paginate = true, int $perPage = 15)
+    public function getFilter(?string $key = '', ?string $value = '', ?string $local = '', ?string $groupName = '', ?string $countryCode = '', bool $paginate = true, int $perPage = 15)
     {
    $builder =  $this->when($key,function ($query,$key){
                     return $query->where('key',$key);

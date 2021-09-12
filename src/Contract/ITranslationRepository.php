@@ -23,7 +23,7 @@ interface ITranslationRepository extends IRepository {
 
     public function updateByKey(array $newValues):bool;
 
-    public function setFilter(string|null $key='', string|null $value='',
+    public function getFilter(string|null $key='', string|null $value='',
                               string|null $local='',string|null $groupName='',
                               string|null $countryCode='',bool $paginate=true,
                               int $perPage=15);

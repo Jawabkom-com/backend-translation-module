@@ -111,8 +111,8 @@ class GetTranslations extends AbstractService
         $countryCode= $this->getInput('countryCode');
         $paginate= $this->getInput('paginate');
         $perPage= $this->getInput('perPage');
-
-        $result = $this->translationRepository->setFilter($key,$value,$local,$groupName,strtoupper($countryCode),$paginate,$perPage);
+        //get
+        $result = $this->translationRepository->getFilter($key,$value,$local,$groupName,strtoupper($countryCode),$paginate,$perPage);
         $this->setOutput('list',$result);
         return $this;
     }

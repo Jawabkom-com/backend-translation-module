@@ -31,6 +31,7 @@ class AddBulkTranslations extends AbstractService {
               empty($record['key']) ||
               empty($record['value']))
            {
+               //check on language_code if exists have two character ,
                throw new MissingRequiredInputException('missing required fields [key*,value*,language_code*,group_name,country_code ]');
            }
         }
@@ -38,21 +39,27 @@ class AddBulkTranslations extends AbstractService {
 
     private function addBulkTranslation()
     {
-        $translation = $this->checkFormat();
-        $insertStatus = $this->translationRepository->insertBulk($translation);
+        $filterInputs = $this->filterInputFormat();
+        $insertStatus = $this->translationRepository->insertBulk($filterInputs);
         $this->setOutput('status',$insertStatus);
     }
 
     /**
      * @return array
      */
-    private function checkFormat(): array
+    private function filterInputFormat(): array
     {
-       return array_map(function ($ele) {
-            $ele['key'] = strtolower($ele['key']);
-            $ele['country_code'] = empty($ele['country_code']) ? '' : strtoupper($ele['country_code']);
-            return $ele;
-        }, $this->getInputs());
+        $filteredInput =[];
+        foreach ($this->getInputs() as $key =>$ele){
+             $filteredInput[] =[
+                  'key'            => trim(strtolower($ele['key'])),
+                  'country_code'   => trim(strtoupper($ele['country_code']??'')),
+                  'language_code'  => trim(strtolower($ele['language_code'])),
+                  'value'          => $ele['value'],
+                  'group_name'     => trim(strtolower($ele['group_name']??'')),
+              ];
+        }
+        return $filteredInput;
     }
 
 }
