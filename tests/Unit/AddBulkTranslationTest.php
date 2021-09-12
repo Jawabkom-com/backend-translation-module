@@ -4,6 +4,7 @@ namespace Jawabkom\Backend\Module\Translation\Test\Unit;
 
 use Jawabkom\Backend\Module\Translation\Service\AddBulkTranslations;
 use Jawabkom\Backend\Module\Translation\Test\AbstractTestCase;
+use Jawabkom\Standard\Exception\InputLengthException;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class AddBulkTranslationTest extends AbstractTestCase
@@ -49,6 +50,34 @@ class AddBulkTranslationTest extends AbstractTestCase
         ]);
         $this->assertTrue($result);
     }
+
+    public function testLanguageCodeInputLengthLessThanRequiredLength(){
+        $trans =[];
+        for ($i=0;$i<3;$i++){
+            $trans[] =[
+                'language_code'=>'e',
+                'key'=>"project-{$i}",
+                'value'=>"translate_model-{$i}",
+            ];
+        }
+        $this->expectException(InputLengthException::class);
+       $this->bulkTrans->inputs($trans)->process()->output('status');
+    }
+    public function testCountryCodeLengthLessThanRequiredLength(){
+        $trans =[];
+        for ($i=0;$i<3;$i++){
+            $trans[] =[
+                'language_code'=>'en',
+                'key'=>"project-{$i}",
+                'value'=>"translate_model-{$i}",
+                'group_name'=>'admin',
+                'country_code'=>'s'
+            ];
+        }
+        $this->expectException(InputLengthException::class);
+       $this->bulkTrans->inputs($trans)->process()->output('status');
+    }
+
     //add bulk with missing required argument
     public function testAddBulkWithMissingValueRequiredArgument(){
         $trans =[];
