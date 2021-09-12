@@ -4,6 +4,7 @@ namespace Jawabkom\Backend\Module\Translation\Service;
 
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
 use Jawabkom\Standard\Abstract\AbstractService;
+use Jawabkom\Standard\Exception\InputLengthException;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class AddBulkTranslations extends AbstractService {
@@ -31,8 +32,13 @@ class AddBulkTranslations extends AbstractService {
               empty($record['key']) ||
               empty($record['value']))
            {
-               //check on language_code if exists have two character ,
-               throw new MissingRequiredInputException('missing required fields [key*,value*,language_code*,group_name,country_code ]');
+                throw new MissingRequiredInputException('missing required fields [key*,value*,language_code*,group_name,country_code ]');
+           }
+           if (strlen(trim($record['language_code']))<2){
+                throw new InputLengthException('language_code length must at least 2 character');
+           }
+           if (!empty($record['country_code']) && strlen(trim($record['country_code']))<2){
+               throw new InputLengthException('country_code length must at least 2 character');
            }
         }
     }
@@ -50,7 +56,7 @@ class AddBulkTranslations extends AbstractService {
     private function filterInputFormat(): array
     {
         $filteredInput =[];
-        foreach ($this->getInputs() as $key =>$ele){
+        foreach ($this->getInputs() as $ele){
              $filteredInput[] =[
                   'key'            => trim(strtolower($ele['key'])),
                   'country_code'   => trim(strtoupper($ele['country_code']??'')),
