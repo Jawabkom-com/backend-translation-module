@@ -6,6 +6,7 @@ use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
 use Jawabkom\Standard\Contract\IEntity;
 use Jawabkom\Standard\Contract\IFilterComposite;
+use Jawabkom\Standard\Contract\IOrderByFilterComposite;
 use Jawabkom\Standard\Contract\IRepository;
 
 class TranslationRepository extends AbstractTranslation implements ITranslationRepository
@@ -92,8 +93,30 @@ class TranslationRepository extends AbstractTranslation implements ITranslationR
    return  $paginate?$builder->paginate($perPage):$builder->get()->all();
  }
 
-    public function getByFilters(IFilterComposite $filterComposite = null, $page = 1, $perPage = 0): array
+    public function getByFilters(IFilterComposite $filterComposite = null, IOrderByFilterComposite $orderByFilterComposite =null, $page = 1, $perPage = 0): mixed
     {
-        // TODO: Implement getByFilters() method.
+        $builder = new static;
+          foreach ($filterComposite->getChildren() as $type=>$child){
+              foreach ($child->toArray() as $column=> $item){
+                  foreach ($item as $op =>$value){
+                       $builder->{$type}($column,$op,$value);
+                  }
+               }
+          }
+          foreach ($orderByFilterComposite->getChildren() as $type=>$child){
+                foreach ($child->toArray() as $column=>$by){
+                        $builder->{$type}($column,$by);
+                  }
+           }
+           if ($perPage){
+            return  $builder->paginate($perPage);
+/*              $currentPage           = ($page - 1) * $perPage;
+              $result['resultCount'] = $builder->count();
+              $result['currentPage'] = $currentPage;
+              $result['perPage']     = $perPage;
+              $result['result']      = $builder->take($perPage)->skip($currentPage)->get()->all();
+              return $result;*/
+          }
+        return $builder->get()->all();
     }
 }

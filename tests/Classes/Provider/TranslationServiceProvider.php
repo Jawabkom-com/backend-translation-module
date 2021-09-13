@@ -4,8 +4,14 @@ namespace Jawabkom\Backend\Module\Translation\Test\Classes\Provider;
 
 use Illuminate\Support\ServiceProvider;
 use Jawabkom\Backend\Module\Translation\Contract\{ITranslationEntity,ITranslationRepository};
- use Jawabkom\Backend\Module\Translation\Test\Classes\{DI,TranslationEntity,TranslationRepository};
- use Jawabkom\Standard\Contract\IDependencyInjector;
+use Jawabkom\Backend\Module\Translation\Test\Classes\{Composite\Filter,
+    Composite\Filters\AndFilter,
+    Composite\OrderBy,
+    Composite\OrderByComposite,
+    DI,
+    TranslationEntity,
+    TranslationRepository};
+use Jawabkom\Standard\Contract\{IAndFilterComposite, IDependencyInjector, IFilter, IOrderBy, IOrderByFilterComposite};
 
 class TranslationServiceProvider extends ServiceProvider
 {
@@ -17,9 +23,14 @@ class TranslationServiceProvider extends ServiceProvider
     public function register()
     {
         $toBind = [
-            ITranslationRepository::class => TranslationRepository::class,
-            ITranslationEntity::class     => TranslationEntity::class,
-            IDependencyInjector::class    => DI::class
+            ITranslationRepository::class    => TranslationRepository::class,
+            ITranslationEntity::class        => TranslationEntity::class,
+            IDependencyInjector::class       => DI::class,
+            IAndFilterComposite::class       => AndFilter::class,
+            IFilter::class                   => Filter::class,
+            IOrderByFilterComposite::class   => OrderByComposite::class,
+            IOrderBy::class                  => OrderBy::class
+
         ];
 
         foreach ($toBind as $interface => $implementation) {

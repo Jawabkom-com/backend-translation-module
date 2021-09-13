@@ -8,6 +8,8 @@ use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IAndFilterComposite;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Contract\IFilter;
+use Jawabkom\Standard\Contract\IOrderBy;
+use Jawabkom\Standard\Contract\IOrderByFilterComposite;
 use Jawabkom\Standard\Contract\IOrFilterComposite;
 use Jawabkom\Standard\Exception\MethodItNotExistsException;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
@@ -17,7 +19,7 @@ use phpDocumentor\Reflection\Types\Object_;
 class GetTranslationsByFilter extends AbstractService
 {
     protected ITranslationRepository $translationRepository;
-    protected $filterNames = ['groupName', 'languageCode', 'countryCode', 'key', 'value'];
+    protected $filterNames = ['groupName', 'languageCode', 'countryCode', 'key', 'value','createdAt','updatedAt'];
 
     public function __construct(IDependencyInjector $di, ITranslationRepository $translationRepository)
     {
@@ -33,10 +35,11 @@ class GetTranslationsByFilter extends AbstractService
         $page = $this->getInput('page', 1);
         $perPage = $this->getInput('perPage', 0);
         $filtersInput = $this->getInput('filters', []);
+        $orderByInput = $this->getInput('orderBy', []);
         $this->validateFilters($filtersInput);
         $compositeAndFilter = $this->buildCompositeFilterObject($filtersInput);
-
-        $this->setOutput('translations', $this->translationRepository->getByFilters($compositeAndFilter, $page, $perPage));
+        $compositeOrderBy   = $this->buildCompositeOrderByObject($orderByInput);
+        $this->setOutput('translations', $this->translationRepository->getByFilters($compositeAndFilter,$compositeOrderBy, $page, $perPage));
         return $this;
     }
 
@@ -64,6 +67,21 @@ class GetTranslationsByFilter extends AbstractService
                 throw new FilterNameDoesNotExistsException("Filter name [{$filterName}]");
             }
         }
+    }
+
+    protected function buildCompositeOrderByObject($orderByInput):IOrderByFilterComposite
+    {
+        /**@var $compositeAndFilter IAndFilterComposite */
+        $orderByComposite = $this->di->make(IOrderByFilterComposite::class);
+        foreach ($orderByInput as $column => $by) {
+             if (in_array($column, $this->filterNames)) {
+                /**@var $filterObj IFilter */
+                $filterObj = $this->di->make(IOrderBy::class);
+                 $orderByComposite->addChild($filterObj->setName($column)->setValue($by));
+            }
+        }
+        return $orderByComposite;
+
     }
 
 }
