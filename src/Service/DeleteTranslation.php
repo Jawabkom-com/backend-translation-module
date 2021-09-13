@@ -5,6 +5,7 @@ namespace Jawabkom\Backend\Module\Translation\Service;
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
 use Jawabkom\Backend\Module\Translation\Test\Classes\TranslationRepository;
 use Jawabkom\Standard\Abstract\AbstractService;
+use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Exception\MethodItNotExistsException;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
 use Jawabkom\Standard\Exception\NotFoundException;
@@ -12,12 +13,11 @@ use Jawabkom\Standard\Exception\NotFoundException;
 class DeleteTranslation extends AbstractService {
 
 
-    private ITranslationRepository $translationRepository;
+    protected ITranslationRepository $translationRepository;
 
-
-    public function __construct(ITranslationRepository $translationRepository)
+    public function __construct(IDependencyInjector $di, ITranslationRepository $translationRepository)
     {
-
+        parent::__construct($di);
         $this->translationRepository = $translationRepository;
     }
 

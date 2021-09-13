@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Translation\Contract;
 
 use Jawabkom\Standard\Contract\IEntity;
+use Jawabkom\Standard\Contract\IFilterComposite;
 use Jawabkom\Standard\Contract\IRepository;
 
 interface ITranslationRepository extends IRepository {
@@ -10,14 +11,9 @@ interface ITranslationRepository extends IRepository {
     public function saveEntity(ITranslationEntity|IEntity $entity): bool;
     public function createEntity(array $params = []): IEntity|ITranslationEntity;
 
-    public function allTranslations():array;
-    public function findByKey(string $key): IRepository|ITranslationRepository|null;
-    public function findByValue(string $value): IRepository|ITranslationRepository|null;
-    public function getByGroup(string $groupName):array|null;
-    public function getByLocal(string $local): array|null;
-    public function getByGroupName(string $groupName):array;
+    public function getByFilters(IFilterComposite $filterComposite = null, $page = 1, $perPage=0):array;
 
-    public function deleteEntity():bool;
+    public function deleteEntity(ITranslationEntity|IEntity $entity):bool;
 
     public function truncateTranslations():bool;
 

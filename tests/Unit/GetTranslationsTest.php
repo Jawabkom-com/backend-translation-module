@@ -4,18 +4,18 @@ namespace Jawabkom\Backend\Module\Translation\Test\Unit;
 
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
 use Jawabkom\Backend\Module\Translation\Service\AddBulkTranslations;
-use Jawabkom\Backend\Module\Translation\Service\GetTranslations;
+use Jawabkom\Backend\Module\Translation\Service\GetTranslationsByFilter;
 use Jawabkom\Backend\Module\Translation\Test\AbstractTestCase;
 
 class GetTranslationsTest extends AbstractTestCase
 {
-    private GetTranslations $trans;
+    private GetTranslationsByFilter $trans;
     private $addBulkTrans;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->trans = $this->app->make(GetTranslations::class);
+        $this->trans = $this->app->make(GetTranslationsByFilter::class);
         $this->addBulkTrans = $this->app->make(AddBulkTranslations::class);
     }
 

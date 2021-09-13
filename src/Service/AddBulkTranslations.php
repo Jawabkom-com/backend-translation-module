@@ -5,6 +5,7 @@ namespace Jawabkom\Backend\Module\Translation\Service;
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
 use Jawabkom\Backend\Module\Translation\Trait\AddTranslationTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
+use Jawabkom\Standard\Contract\IDependencyInjector;
 
 class AddBulkTranslations extends AbstractService
 {
@@ -13,8 +14,9 @@ class AddBulkTranslations extends AbstractService
 
     protected ITranslationRepository $translationRepository;
 
-    public function __construct(ITranslationRepository $translationRepository)
+    public function __construct(IDependencyInjector $di, ITranslationRepository $translationRepository)
     {
+        parent::__construct($di);
         $this->translationRepository = $translationRepository;
     }
 

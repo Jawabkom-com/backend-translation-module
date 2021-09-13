@@ -2,12 +2,19 @@
 
 namespace Jawabkom\Standard\Abstract;
 
+use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Contract\IService;
 
 abstract class AbstractService implements IService
 {
     private $input = [];
     private $output = [];
+    protected IDependencyInjector $di;
+
+    public function __construct(IDependencyInjector $di)
+    {
+        $this->di = $di;
+    }
 
     protected function setOutput(string $key, mixed $value):static {
         $this->output[$key] = $value;
@@ -36,9 +43,9 @@ abstract class AbstractService implements IService
         return $this;
     }
 
-    protected function getInput($key):mixed
+    protected function getInput($key, $default = null):mixed
     {
-        return $this->input[$key] ?? null;
+        return $this->input[$key] ?? $default;
     }
 
     protected function getInputs(): array
