@@ -3,10 +3,9 @@
 namespace Jawabkom\Backend\Module\Translation\Test\Classes\Provider;
 
 use Illuminate\Support\ServiceProvider;
-use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
-use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
-use Jawabkom\Backend\Module\Translation\Test\Classes\TranslationEntity;
-use Jawabkom\Backend\Module\Translation\Test\Classes\TranslationRepository;
+use Jawabkom\Backend\Module\Translation\Contract\{ITranslationEntity,ITranslationRepository};
+ use Jawabkom\Backend\Module\Translation\Test\Classes\{DI,TranslationEntity,TranslationRepository};
+ use Jawabkom\Standard\Contract\IDependencyInjector;
 
 class TranslationServiceProvider extends ServiceProvider
 {
@@ -19,7 +18,8 @@ class TranslationServiceProvider extends ServiceProvider
     {
         $toBind = [
             ITranslationRepository::class => TranslationRepository::class,
-            ITranslationEntity::class     => TranslationEntity::class
+            ITranslationEntity::class     => TranslationEntity::class,
+            IDependencyInjector::class    => DI::class
         ];
 
         foreach ($toBind as $interface => $implementation) {
@@ -31,7 +31,6 @@ class TranslationServiceProvider extends ServiceProvider
     {
         $this->loadMigrations();
         $this->loadConfig();
-     //   $this->loadRoutes();
     }
 
     private function loadMigrations(): void

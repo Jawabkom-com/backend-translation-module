@@ -73,7 +73,7 @@ class DeleteTranslation extends AbstractService {
         if (!$record){
             throw new NotFoundException("Translation:: {$key} is not exists");
         }
-        $this->setOutput('status',$record->deleteEntity());
+        $this->setOutput('status',$this->translationRepository->deleteEntity($record));
     }
 
     private function handlerByTransGroup(){
@@ -104,7 +104,7 @@ class DeleteTranslation extends AbstractService {
         return array_map(function ($record) {
             $idR = $record->id;
             try {
-                $record->deleteEntity();
+               $this->translationRepository->deleteEntity($record);
                 return [$idR => true];
             } catch (\Throwable $exception) {
                  return [$idR => false];

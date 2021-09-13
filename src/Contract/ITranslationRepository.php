@@ -13,7 +13,7 @@ interface ITranslationRepository extends IRepository {
 
     public function getByFilters(IFilterComposite $filterComposite = null, $page = 1, $perPage=0):array;
 
-    public function deleteEntity(ITranslationEntity|IEntity $entity):bool;
+    public function deleteEntity(mixed $entity):bool;
 
     public function truncateTranslations():bool;
 

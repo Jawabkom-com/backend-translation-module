@@ -5,6 +5,7 @@ namespace Jawabkom\Backend\Module\Translation\Test\Classes;
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
 use Jawabkom\Standard\Contract\IEntity;
+use Jawabkom\Standard\Contract\IFilterComposite;
 use Jawabkom\Standard\Contract\IRepository;
 
 class TranslationRepository extends AbstractTranslation implements ITranslationRepository
@@ -33,9 +34,9 @@ class TranslationRepository extends AbstractTranslation implements ITranslationR
         return $this->where('key',$key)->first();
     }
 
-    public function deleteEntity(): bool
+    public function deleteEntity(mixed $entity): bool
     {
-      return $this->delete();
+      return $entity->delete();
     }
 
     public function allTranslations():array
@@ -90,4 +91,9 @@ class TranslationRepository extends AbstractTranslation implements ITranslationR
                  });
    return  $paginate?$builder->paginate($perPage):$builder->get()->all();
  }
+
+    public function getByFilters(IFilterComposite $filterComposite = null, $page = 1, $perPage = 0): array
+    {
+        // TODO: Implement getByFilters() method.
+    }
 }
