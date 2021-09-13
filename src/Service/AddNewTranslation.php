@@ -3,12 +3,15 @@
 namespace Jawabkom\Backend\Module\Translation\Service;
 
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
+use Jawabkom\Backend\Module\Translation\Trait\AddTranslationTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Exception\InputLengthException;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class AddNewTranslation extends AbstractService {
+
+    use AddTranslationTrait;
 
     protected ITranslationRepository $translationRepository;
 
@@ -17,37 +20,49 @@ class AddNewTranslation extends AbstractService {
         parent::__construct($di);
         $this->translationRepository = $translationRepository;
     }
-    public function validate():void{
-        if (!$this->getInput('translationKey') || !$this->getInput('translationValue') || !$this->getInput('languageCode')){
-            throw new MissingRequiredInputException('missing required fields [translationKey*,translationValue*,languageCode*,groupName,countryCode ]');
-        }
-        if (strlen(trim($this->getInput('languageCode')))<2){
-            throw new InputLengthException('languageCode length must at least 2 character');
-        }
 
-        if ($this->getInput('countryCode') && strlen(trim($this->getInput('countryCode')))<2){
-            throw new InputLengthException('countryCode length must at least 2 character');
-        }
 
-    }
+    //
+    // LEVEL 0
+    //
     public function process(): static
     {
-        $this->validate();
+        $this->validateInputs();
         $this->createNewTranslationRecord();
         return $this;
     }
 
+
+    //
+    // LEVEL 1
+    //
+    public function validateInputs():void{
+        $this->validateSingleTranslationInput($this->getInputs());
+    }
+
+
     private function createNewTranslationRecord()
     {
+        $filterInputs = $this->filterInputFormat();
         $newEntity = $this->translationRepository->createEntity();
-        $newEntity->setLanguageCode($this->getInput('languageCode'));
-        $newEntity->setTranslationKey(trim(strtolower($this->getInput('translationKey'))));
-        $newEntity->setTranslationValue($this->getInput('translationValue'));
-        $newEntity->setTranslationGroupName($this->getInput('groupName')??'');
-        $newEntity->setCountryCode(trim(strtoupper($this->getInput('countryCode')??'')));
+        $newEntity->setLanguageCode($filterInputs['language_code']);
+        $newEntity->setTranslationKey($filterInputs['key']);
+        $newEntity->setTranslationValue($filterInputs['value']);
+        $newEntity->setTranslationGroupName($filterInputs['group_name']??'');
+        $newEntity->setCountryCode(trim(strtoupper($filterInputs['country_code']??'')));
 
         if ($this->translationRepository->saveEntity($newEntity)){
             $this->setOutput('newEntity',$newEntity);
         }
     }
+
+
+    //
+    // LEVEL 2
+    //
+    protected function filterInputFormat() :array {
+        return $this->filterSingleTranslationInput($this->getInputs());
+    }
+
+
 }
