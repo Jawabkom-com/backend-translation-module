@@ -34,11 +34,11 @@ class DeleteTranslationTest extends AbstractTestCase
         $key          = 'projectName';
         $value        = 'translationPackage';
 
-        $newEntity =  $this->addTransService->input('languageCode',$languageCode)
-                        ->input('countryCode',$countryCode)
-                        ->input('groupName',$groupName)
-                        ->input('translationKey',$key)
-                        ->input('translationValue',$value)
+        $newEntity =  $this->addTransService->input('language_code',$languageCode)
+                        ->input('country_code',$countryCode)
+                        ->input('group_name',$groupName)
+                        ->input('key',$key)
+                        ->input('value',$value)
                         ->process()
                         ->output('newEntity');
 
@@ -67,11 +67,11 @@ class DeleteTranslationTest extends AbstractTestCase
         $key          = 'projectName';
         $value        = 'translationPackage';
 
-        $newEntity =  $this->addTransService->input('languageCode',$languageCode)
-            ->input('countryCode',$countryCode)
-            ->input('groupName',$groupName)
-            ->input('translationKey',$key)
-            ->input('translationValue',$value)
+        $newEntity =  $this->addTransService->input('language_code',$languageCode)
+            ->input('country_code',$countryCode)
+            ->input('group_name',$groupName)
+            ->input('key',$key)
+            ->input('value',$value)
             ->process()
             ->output('newEntity');
         $this->assertInstanceOf(ITranslationEntity::class,$newEntity);

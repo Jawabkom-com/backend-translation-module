@@ -25,9 +25,9 @@ class UpdateTranslationsTest extends AbstractTestCase
         $value        = 'translationPackage';
 
         $addNewTrans = $this->app->make(AddNewTranslation::class);
-        $result = $addNewTrans->input('languageCode',$languageCode)
-                              ->input('translationKey',$key)
-                              ->input('translationValue',$value)
+        $result = $addNewTrans->input('language_code',$languageCode)
+                              ->input('key',$key)
+                              ->input('value',$value)
                               ->process()
                               ->output('newEntity');
         $this->assertInstanceOf(ITranslationEntity::class,$result);
