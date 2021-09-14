@@ -32,11 +32,11 @@ class AddNewTranslationTest extends AbstractTestCase
         $key          = 'projectName';
         $value        = 'translationPackage';
 
-        $newEntity =  $this->addNewTrans->input('languageCode',$languageCode)
-                          ->input('countryCode',$countryCode)
-                          ->input('groupName',$groupName)
-                          ->input('translationKey',$key)
-                          ->input('translationValue',$value)
+        $newEntity =  $this->addNewTrans->input('language_code',$languageCode)
+                          ->input('country_code',$countryCode)
+                          ->input('group_name',$groupName)
+                          ->input('key',$key)
+                          ->input('value',$value)
                           ->process()
                           ->output('newEntity');
         $this->assertInstanceOf(ITranslationEntity::class,$newEntity);
@@ -46,9 +46,9 @@ class AddNewTranslationTest extends AbstractTestCase
         $languageCode = 'en';
         $key          = 'projectName';
         $value        = 'translationPackage';
-        $result = $this->addNewTrans->input('languageCode',$languageCode)
-                          ->input('translationKey',$key)
-                          ->input('translationValue',$value)
+        $result = $this->addNewTrans->input('language_code',$languageCode)
+                          ->input('key',$key)
+                          ->input('value',$value)
                           ->process()->output('newEntity');
         $this->assertInstanceOf(ITranslationEntity::class,$result);
 
@@ -62,10 +62,10 @@ class AddNewTranslationTest extends AbstractTestCase
         $value        = 'translationPackage';
 
         $this->expectException(MissingRequiredInputException::class);
-        $this->addNewTrans->input('languageCode',$languageCode)
-                           ->input('countryCode',$countryCode)
-                           ->input('groupName',$groupName)
-                           ->input('translationValue',$value)
+        $this->addNewTrans->input('language_code',$languageCode)
+                           ->input('country_code',$countryCode)
+                           ->input('group_name',$groupName)
+                           ->input('value',$value)
                            ->process();
      }
 
@@ -76,10 +76,10 @@ class AddNewTranslationTest extends AbstractTestCase
         $key          = 'projectName';
 
         $this->expectException(MissingRequiredInputException::class);
-        $this->addNewTrans->input('languageCode',$languageCode)
-                          ->input('countryCode',$countryCode)
-                          ->input('groupName',$groupName)
-                          ->input('translationKey',$key)
+        $this->addNewTrans->input('language_code',$languageCode)
+                          ->input('country_code',$countryCode)
+                          ->input('group_name',$groupName)
+                          ->input('key',$key)
                           ->process();
     }
 
@@ -89,11 +89,11 @@ class AddNewTranslationTest extends AbstractTestCase
         $groupName    = 'admin';
         $key          = 'ProjectName';
         $value        = 'translationPackage';
-        $newEntity = $this->addNewTrans->input('languageCode',$languageCode)
-                           ->input('countryCode',$countryCode)
-                           ->input('groupName',$groupName)
-                           ->input('translationKey',$key)
-                           ->input('translationValue',$value)
+        $newEntity = $this->addNewTrans->input('language_code',$languageCode)
+                           ->input('country_code',$countryCode)
+                           ->input('group_name',$groupName)
+                           ->input('key',$key)
+                           ->input('value',$value)
                            ->process()
                            ->output('newEntity');
         $this->assertInstanceOf(ITranslationEntity::class,$newEntity);
@@ -106,11 +106,11 @@ class AddNewTranslationTest extends AbstractTestCase
         $key          = 'ProjectName';
         $value        = 'translationPackage';
         $this->expectException(InputLengthException::class);
-         $this->addNewTrans->input('languageCode',$languageCode)
-                           ->input('countryCode',$countryCode)
-                           ->input('groupName',$groupName)
-                           ->input('translationKey',$key)
-                           ->input('translationValue',$value)
+         $this->addNewTrans->input('language_code',$languageCode)
+                           ->input('country_code',$countryCode)
+                           ->input('group_name',$groupName)
+                           ->input('key',$key)
+                           ->input('value',$value)
                            ->process()
                            ->output('newEntity');
     }
@@ -122,11 +122,11 @@ class AddNewTranslationTest extends AbstractTestCase
         $key          = 'ProjectName';
         $value        = 'translationPackage';
         $this->expectException(InputLengthException::class);
-         $this->addNewTrans->input('languageCode',$languageCode)
-                           ->input('countryCode',$countryCode)
-                           ->input('groupName',$groupName)
-                           ->input('translationKey',$key)
-                           ->input('translationValue',$value)
+         $this->addNewTrans->input('language_code',$languageCode)
+                           ->input('country_code',$countryCode)
+                           ->input('group_name',$groupName)
+                           ->input('key',$key)
+                           ->input('value',$value)
                            ->process()
                            ->output('newEntity');
     }
