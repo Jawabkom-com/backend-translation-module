@@ -2,11 +2,15 @@
 
 namespace Jawabkom\Backend\Module\Translation\Test\Classes;
 
+use Doctrine\DBAL\Query\QueryBuilder;
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
+use Jawabkom\Standard\Contract\IAndFilterComposite;
 use Jawabkom\Standard\Contract\IEntity;
+use Jawabkom\Standard\Contract\IFilter;
 use Jawabkom\Standard\Contract\IFilterComposite;
 use Jawabkom\Standard\Contract\IOrderByFilterComposite;
+use Jawabkom\Standard\Contract\IOrFilterComposite;
 use Jawabkom\Standard\Contract\IRepository;
 
 class TranslationRepository extends AbstractTranslation implements ITranslationRepository
@@ -93,21 +97,22 @@ class TranslationRepository extends AbstractTranslation implements ITranslationR
    return  $paginate?$builder->paginate($perPage):$builder->get()->all();
  }
 
-    public function getByFilters(IFilterComposite $filterComposite = null, IOrderByFilterComposite $orderByFilterComposite =null, $page = 1, $perPage = 0): mixed
+    public function getByFilters(IFilterComposite $filterComposite = null, array $orderBy = [], $page = 1, $perPage = 0): mixed
     {
-        $builder = new static;
-          foreach ($filterComposite->getChildren() as $type=>$child){
-              foreach ($child->toArray() as $column=> $item){
-                  foreach ($item as $op =>$value){
-                       $builder->{$type}($column,$op,$value);
-                  }
-               }
-          }
-          foreach ($orderByFilterComposite->getChildren() as $type=>$child){
-                foreach ($child->toArray() as $column=>$by){
-                        $builder->{$type}($column,$by);
-                  }
-           }
+        $builder = static::query();
+        $this->filtersToWhereCondition($filterComposite, $builder);
+//          foreach ($filterComposite->getChildren() as $type=>$child){
+//              foreach ($child->toArray() as $column=> $item){
+//                  foreach ($item as $op =>$value){
+//                       $builder->{$type}($column,$op,$value);
+//                  }
+//               }
+//          }
+//          foreach ($orderByFilterComposite->getChildren() as $type=>$child){
+//                foreach ($child->toArray() as $column=>$by){
+//                        $builder->{$type}($column,$by);
+//                  }
+//           }
            if ($perPage){
             return  $builder->paginate($perPage);
 /*              $currentPage           = ($page - 1) * $perPage;
@@ -119,4 +124,26 @@ class TranslationRepository extends AbstractTranslation implements ITranslationR
           }
         return $builder->get()->all();
     }
+
+
+    protected function filtersToWhereCondition(IFilterComposite $filterComposite, QueryBuilder $query) {
+        foreach ($filterComposite->getChildren() as $child) {
+            if($child instanceof IOrFilterComposite) {
+                $query->orWhere(function ($q) use ($child) {
+                    $this->filtersToWhereCondition($child, $q);
+                });
+            } elseif($child instanceof IAndFilterComposite) {
+                $query->andWhere(function ($q) use($child) {
+                    $this->filtersToWhereCondition($child, $q);
+                });
+            } elseif($child instanceof IFilter) {
+                if($filterComposite instanceof IOrFilterComposite) {
+                    $query->orWhere($child->getName(), $child->getOperation()??'=', $child->getValue());
+                } else {
+                    $query->andWhere($child->getName(), $child->getOperation()??'=', $child->getValue());
+                }
+            }
+        }
+    }
+
 }

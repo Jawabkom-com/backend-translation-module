@@ -38,8 +38,8 @@ class GetTranslationsByFilter extends AbstractService
         $orderByInput = $this->getInput('orderBy', []);
         $this->validateFilters($filtersInput);
         $compositeAndFilter = $this->buildCompositeFilterObject($filtersInput);
-        $compositeOrderBy   = $this->buildCompositeOrderByObject($orderByInput);
-        $this->setOutput('translations', $this->translationRepository->getByFilters($compositeAndFilter,$compositeOrderBy, $page, $perPage));
+        $orderBy   = $this->buildCompositeOrderByObject($orderByInput);
+        $this->setOutput('translations', $this->translationRepository->getByFilters($compositeAndFilter,$orderBy, $page, $perPage));
         return $this;
     }
 
@@ -69,19 +69,17 @@ class GetTranslationsByFilter extends AbstractService
         }
     }
 
-    protected function buildCompositeOrderByObject($orderByInput):IOrderByFilterComposite
+    protected function buildCompositeOrderByObject($orderByInput):array
     {
-        /**@var $compositeAndFilter IAndFilterComposite */
-        $orderByComposite = $this->di->make(IOrderByFilterComposite::class);
+        $orderBy = [];
         foreach ($orderByInput as $column => $by) {
              if (in_array($column, $this->filterNames)) {
-                /**@var $filterObj IFilter */
-                $filterObj = $this->di->make(IOrderBy::class);
-                 $orderByComposite->addChild($filterObj->setName($column)->setValue($by));
+                 /**@var $orderByObj IOrderBy */
+                 $orderByObj = $this->di->make(IOrderBy::class);
+                 $orderBy[] = $orderByObj->setFieldName($column)->setIsDescending(trim(strtolower($by)) == 'desc' ? true : false);
             }
         }
-        return $orderByComposite;
-
+        return $orderBy;
     }
 
 }

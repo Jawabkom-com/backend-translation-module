@@ -4,8 +4,9 @@ namespace Jawabkom\Backend\Module\Translation\Test\Classes\Composite\Filters;
 
 use Jawabkom\Standard\Contract\IAbstractFilter;
 use Jawabkom\Standard\Contract\IAndFilterComposite;
+use Jawabkom\Standard\Contract\IFilterComposite;
 
-class AndFilter implements IAndFilterComposite
+class AbstractFilterComposite implements IFilterComposite
 {
     protected array $child =[];
     public function toArray(): array
@@ -15,7 +16,7 @@ class AndFilter implements IAndFilterComposite
 
     public function addChild(IAbstractFilter $filter): static
     {
-        $this->child['where'] = $filter;
+        $this->child[] = $filter;
         return $this;
     }
 

@@ -5,7 +5,7 @@ namespace Jawabkom\Backend\Module\Translation\Test\Classes\Provider;
 use Illuminate\Support\ServiceProvider;
 use Jawabkom\Backend\Module\Translation\Contract\{ITranslationEntity,ITranslationRepository};
 use Jawabkom\Backend\Module\Translation\Test\Classes\{Composite\Filter,
-    Composite\Filters\AndFilter,
+    Composite\Filters\AndFilterComposite,
     Composite\OrderBy,
     Composite\OrderByComposite,
     DI,
@@ -26,7 +26,7 @@ class TranslationServiceProvider extends ServiceProvider
             ITranslationRepository::class    => TranslationRepository::class,
             ITranslationEntity::class        => TranslationEntity::class,
             IDependencyInjector::class       => DI::class,
-            IAndFilterComposite::class       => AndFilter::class,
+            IAndFilterComposite::class       => AndFilterComposite::class,
             IFilter::class                   => Filter::class,
             IOrderByFilterComposite::class   => OrderByComposite::class,
             IOrderBy::class                  => OrderBy::class
