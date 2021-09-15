@@ -4,7 +4,6 @@ namespace Jawabkom\Backend\Module\Translation\Contract;
 
 use Jawabkom\Standard\Contract\IEntity;
 use Jawabkom\Standard\Contract\IFilterComposite;
-use Jawabkom\Standard\Contract\IOrderByFilterComposite;
 use Jawabkom\Standard\Contract\IRepository;
 
 interface ITranslationRepository extends IRepository {
@@ -18,6 +17,6 @@ interface ITranslationRepository extends IRepository {
 
     public function truncateTranslations():bool;
 
-    public function updateByKey(array $newValues):bool;
+    public function updateEntity($entity,array $params):bool;
 
 }

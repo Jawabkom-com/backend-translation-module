@@ -68,12 +68,12 @@ class TranslationRepository extends AbstractTranslation implements ITranslationR
       return $this->where('language_code',$local)->get()->all();
     }
 
-    public function updateByKey(array $newValues): bool
+    public function updateEntity($entity,array $params): bool
     {
         try {
-            return $this->update($newValues);
+            return $entity->update($params);
         }catch (\Throwable $exception){
-            return false;
+             return false;
         }
      }
 
@@ -81,22 +81,6 @@ class TranslationRepository extends AbstractTranslation implements ITranslationR
     {
        return $this->where('value',$value)->first();
     }
-
-    public function getFilter(?string $key = '', ?string $value = '', ?string $local = '', ?string $groupName = '', ?string $countryCode = '', bool $paginate = true, int $perPage = 15)
-    {
-   $builder =  $this->when($key,function ($query,$key){
-                    return $query->where('key',$key);
-                })->when($value,function ($query,$value){
-                     return $query->where('value',$value);
-                })->when($local,function ($query,$local){
-                    return $query->where('language_code',$local);
-                })->when($groupName,function ($query,$groupName){
-                    return $query->where('group_name',$groupName);
-                })->when($countryCode,function ($query,$countryCode){
-                    return $query->where('country_code',$countryCode);
-                 });
-   return  $paginate?$builder->paginate($perPage):$builder->get()->all();
- }
 
     public function getByFilters(IFilterComposite $filterComposite = null, array $orderBy = [], $page = 1, $perPage = 0): mixed
     {

@@ -6,7 +6,6 @@ use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
 use Jawabkom\Backend\Module\Translation\Service\AddNewTranslation;
 use Jawabkom\Backend\Module\Translation\Service\UpdateTranslations;
 use Jawabkom\Backend\Module\Translation\Test\AbstractTestCase;
-use Jawabkom\Standard\Exception\NotFoundException;
 
 class UpdateTranslationsTest extends AbstractTestCase
 {
@@ -36,19 +35,17 @@ class UpdateTranslationsTest extends AbstractTestCase
         ]);
 
         $newValue = 'Jawabkom Package';
-        $status   = $this->updateTrans->byKey($key,['value'=> $newValue])
-                                      ->process()
-                                      ->output('status');
+        $filter =[
+            'key' => $key
+        ];
+
+        $status = $this->updateTrans->input('filters',$filter)
+                                           ->input('newValue',['value'=>$newValue])
+                                           ->process()
+                                           ->output('status');
         $this->assertTrue($status);
         $this->assertDatabaseHas('translations',[
             'value'=>$newValue,
         ]);
     }
-    //test update not exists trans key
-    public function testUpdateTranslationByKeyNotExists(){
-        $this->expectException(NotFoundException::class);
-       $this->updateTrans->byKey('testToTest',['value'=> 'update with not exits key'])
-                         ->process()
-                         ->output('status');
-     }
 }
