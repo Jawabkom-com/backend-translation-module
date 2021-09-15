@@ -28,7 +28,6 @@ class TranslationServiceProvider extends ServiceProvider
             IDependencyInjector::class       => DI::class,
             IAndFilterComposite::class       => AndFilterComposite::class,
             IFilter::class                   => Filter::class,
-            IOrderByFilterComposite::class   => OrderByComposite::class,
             IOrderBy::class                  => OrderBy::class
 
         ];

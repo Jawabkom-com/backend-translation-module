@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Translation\Test\Classes;
 
 use Doctrine\DBAL\Query\QueryBuilder;
+use Illuminate\Database\Eloquent\Builder;
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
 use Jawabkom\Standard\Contract\IAndFilterComposite;
@@ -99,51 +100,35 @@ class TranslationRepository extends AbstractTranslation implements ITranslationR
 
     public function getByFilters(IFilterComposite $filterComposite = null, array $orderBy = [], $page = 1, $perPage = 0): mixed
     {
-        $builder = static::query();
-        $this->filtersToWhereCondition($filterComposite, $builder);
-//          foreach ($filterComposite->getChildren() as $type=>$child){
-//              foreach ($child->toArray() as $column=> $item){
-//                  foreach ($item as $op =>$value){
-//                       $builder->{$type}($column,$op,$value);
-//                  }
-//               }
-//          }
-//          foreach ($orderByFilterComposite->getChildren() as $type=>$child){
-//                foreach ($child->toArray() as $column=>$by){
-//                        $builder->{$type}($column,$by);
-//                  }
-//           }
+        $builder = new static;
+        $builder = $this->filtersToWhereCondition($filterComposite, $builder);
            if ($perPage){
             return  $builder->paginate($perPage);
-/*              $currentPage           = ($page - 1) * $perPage;
-              $result['resultCount'] = $builder->count();
-              $result['currentPage'] = $currentPage;
-              $result['perPage']     = $perPage;
-              $result['result']      = $builder->take($perPage)->skip($currentPage)->get()->all();
-              return $result;*/
           }
         return $builder->get()->all();
     }
 
 
-    protected function filtersToWhereCondition(IFilterComposite $filterComposite, QueryBuilder $query) {
+    protected function filtersToWhereCondition(IFilterComposite $filterComposite,$query) {
+
         foreach ($filterComposite->getChildren() as $child) {
             if($child instanceof IOrFilterComposite) {
                 $query->orWhere(function ($q) use ($child) {
                     $this->filtersToWhereCondition($child, $q);
                 });
             } elseif($child instanceof IAndFilterComposite) {
-                $query->andWhere(function ($q) use($child) {
+                $query->where(function ($q) use($child) {
                     $this->filtersToWhereCondition($child, $q);
                 });
             } elseif($child instanceof IFilter) {
                 if($filterComposite instanceof IOrFilterComposite) {
                     $query->orWhere($child->getName(), $child->getOperation()??'=', $child->getValue());
                 } else {
-                    $query->andWhere($child->getName(), $child->getOperation()??'=', $child->getValue());
+                   $query->Where($child->getName(), $child->getOperation()??'=', $child->getValue());
                 }
             }
         }
+        return $query;
     }
 
 }
