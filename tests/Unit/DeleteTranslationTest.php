@@ -41,67 +41,46 @@ class DeleteTranslationTest extends AbstractTestCase
                         ->input('value',$value)
                         ->process()
                         ->output('newEntity');
-
-        $deleteStatus = $this->deleteTransService->byTransKey($newEntity->getTranslationKey())
+        $filter =[
+            'key'=>$newEntity->getTranslationKey()
+        ];
+        $deleteStatus = $this->deleteTransService->input('filters',$filter)
                              ->process()
                              ->output('status');
         $this->assertDatabaseMissing('translations',[
             'key'=>$newEntity->getTranslationKey()
         ]);
-        $this->assertTrue($deleteStatus);
-    }
-    //test delete key is not exits
-    public function testDeleteByKeyNotExits(){
-
-        $this->expectException(NotFoundException::class);
-        $this->deleteTransService->byTransKey('JAWAB-TRANSLATE')
-             ->process()
-             ->output('status');
-    }
-
-    //test delete trans all
-    public function testDeleteAllTrans(){
-        $countryCode  = 'ps';
-        $languageCode = 'en';
-        $groupName    = 'admin';
-        $key          = 'projectName';
-        $value        = 'translationPackage';
-
-        $newEntity =  $this->addTransService->input('language_code',$languageCode)
-            ->input('country_code',$countryCode)
-            ->input('group_name',$groupName)
-            ->input('key',$key)
-            ->input('value',$value)
-            ->process()
-            ->output('newEntity');
-        $this->assertInstanceOf(ITranslationEntity::class,$newEntity);
-
-        $this->deleteTransService->truncateTranslation()->process();
-        $this->assertDatabaseCount('translations',0);
-
+        $this->assertIsArray($deleteStatus[0]);
+        $this->assertNotEmpty($deleteStatus[0]);
     }
     //test delete trans by group
     public function testDeleteTransByGroup(){
         list($trans, $result) = $this->factoryBulkTranslation();
         $this->assertTrue($result);
-        $groupName = $trans[0]['group_name'];
-        $deleteStatus = $this->deleteTransService->byTransGroup($groupName)
+        $filter =[
+            'groupName' => $trans[0]['group_name']
+        ];
+        $deleteStatus = $this->deleteTransService->input('filters',$filter)
                                                  ->process()
                                                  ->output('status');
         $this->assertIsArray($deleteStatus);
         $this->assertDatabaseMissing('translations',[
-            "groupName"=> $groupName
+            "groupName"=> $trans[0]['group_name']
         ]);
     }
     //test delete trans by language code
     public function testDeleteTransByLocal(){
 
         list($trans, $result) = $this->factoryBulkTranslation();
-        $this->assertTrue($result);
         $local = $trans[0]['language_code'];
-         $deleteStatus = $this->deleteTransService->byTransLocal($local)
-            ->process()
-            ->output('status');
+        $this->assertTrue($result);
+        $filter =[
+            'languageCode' => $local
+        ];
+
+         $deleteStatus = $this->deleteTransService->input('filters',$filter)
+                                                  ->process()
+                                                  ->output('status');
         $this->assertIsArray($deleteStatus);
         $this->assertDatabaseMissing('translations',[
             "languageCode"=> $local
