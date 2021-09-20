@@ -2,14 +2,10 @@
 
 namespace Jawabkom\Backend\Module\Translation\Service;
 
-
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
 use Jawabkom\Backend\Module\Translation\Trait\GetTranslationTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
-use Jawabkom\Standard\Exception\MethodItNotExistsException;
-use Jawabkom\Standard\Exception\MissingRequiredInputException;
-use Jawabkom\Standard\Exception\NotFoundException;
 
 class UpdateTranslations extends AbstractService
 {

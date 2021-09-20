@@ -7,9 +7,6 @@ use Jawabkom\Backend\Module\Translation\Test\Classes\TranslationRepository;
 use Jawabkom\Backend\Module\Translation\Trait\GetTranslationTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
-use Jawabkom\Standard\Exception\MethodItNotExistsException;
-use Jawabkom\Standard\Exception\MissingRequiredInputException;
-use Jawabkom\Standard\Exception\NotFoundException;
 
 class DeleteTranslation extends AbstractService {
 

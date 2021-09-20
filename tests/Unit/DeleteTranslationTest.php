@@ -8,8 +8,6 @@ use Jawabkom\Backend\Module\Translation\Service\AddBulkTranslations;
 use Jawabkom\Backend\Module\Translation\Service\AddNewTranslation;
 use Jawabkom\Backend\Module\Translation\Service\DeleteTranslation;
 use Jawabkom\Backend\Module\Translation\Test\AbstractTestCase;
-use Jawabkom\Standard\Exception\MethodItNotExistsException;
-use Jawabkom\Standard\Exception\NotFoundException;
 
 class DeleteTranslationTest extends AbstractTestCase
 {
