@@ -32,7 +32,8 @@ class AddBulkTranslationTest extends AbstractTestCase
       $this->assertDatabaseHas('translations',[
             "key"=>"project-1"
       ]);
-      $this->assertTrue($result);
+       $this->assertIsArray($result);
+       $this->assertEquals(3,$result['created']);
     }
     //add bulk with required argument only
     public function testAddBulkTranslationWithRequiredArgumentOnly(){
@@ -48,7 +49,8 @@ class AddBulkTranslationTest extends AbstractTestCase
         $this->assertDatabaseHas('translations',[
             "key"=>"project-1"
         ]);
-        $this->assertTrue($result);
+        $this->assertIsArray($result);
+        $this->assertEquals(3,$result['created']);
     }
 
     public function testLanguageCodeInputLengthLessThanRequiredLength(){
@@ -122,7 +124,8 @@ class AddBulkTranslationTest extends AbstractTestCase
         $this->assertDatabaseHas('translations',[
             "key"=>"project-1"
         ]);
-        $this->assertTrue($result);
+        $this->assertIsArray($result);
+        $this->assertEquals(3,$result['created']);
     }
 
     public function testUpperCaseCountryCodeAtAddBulkTranslation(){
@@ -139,7 +142,8 @@ class AddBulkTranslationTest extends AbstractTestCase
         $this->assertDatabaseHas('translations',[
             "country_code"=>"PS"
         ]);
-        $this->assertTrue($result);
+        $this->assertIsArray($result);
+        $this->assertEquals(3,$result['created']);
     }
 
 }

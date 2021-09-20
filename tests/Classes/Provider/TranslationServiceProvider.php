@@ -4,7 +4,8 @@ namespace Jawabkom\Backend\Module\Translation\Test\Classes\Provider;
 
 use Illuminate\Support\ServiceProvider;
 use Jawabkom\Backend\Module\Translation\Contract\{ITranslationEntity,ITranslationRepository};
-use Jawabkom\Backend\Module\Translation\Test\Classes\{Composite\Filter,
+use Jawabkom\Backend\Module\Translation\Test\Classes\{AbstractTranslation,
+    Composite\Filter,
     Composite\Filters\AndFilterComposite,
     Composite\OrderBy,
     Composite\OrderByComposite,
@@ -24,7 +25,7 @@ class TranslationServiceProvider extends ServiceProvider
     {
         $toBind = [
             ITranslationRepository::class    => TranslationRepository::class,
-            ITranslationEntity::class        => TranslationEntity::class,
+            ITranslationEntity::class        => TranslationRepository::class,
             IDependencyInjector::class       => DI::class,
             IAndFilterComposite::class       => AndFilterComposite::class,
             IFilter::class                   => Filter::class,

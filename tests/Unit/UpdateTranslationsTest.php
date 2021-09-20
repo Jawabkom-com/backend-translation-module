@@ -4,7 +4,6 @@ namespace Jawabkom\Backend\Module\Translation\Test\Unit;
 
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
 use Jawabkom\Backend\Module\Translation\Service\SaveTranslation;
-use Jawabkom\Backend\Module\Translation\Service\UpdateTranslations;
 use Jawabkom\Backend\Module\Translation\Test\AbstractTestCase;
 
 class UpdateTranslationsTest extends AbstractTestCase
@@ -14,7 +13,7 @@ class UpdateTranslationsTest extends AbstractTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->updateTrans = $this->app->make(UpdateTranslations::class);
+        $this->updateTrans = $this->app->make(SaveTranslation::class);
     }
 
     //test updateTranslationByKey
@@ -23,13 +22,12 @@ class UpdateTranslationsTest extends AbstractTestCase
         $key          = 'projectName';
         $value        = 'translationPackage';
 
-        $addNewTrans = $this->app->make(SaveTranslation::class);
-        $result = $addNewTrans->input('language_code',$languageCode)
-                              ->input('key',$key)
-                              ->input('value',$value)
-                              ->process()
-                              ->output('newEntity');
-        $this->assertInstanceOf(ITranslationEntity::class,$result);
+        $newUpdate= $this->updateTrans->input('language_code',$languageCode)
+                                      ->input('key',$key)
+                                      ->input('value',$value)
+                                      ->process()
+                                      ->output('entity');
+         $this->assertInstanceOf(ITranslationEntity::class,$newUpdate);
         $this->assertDatabaseHas('translations',[
             'value'=>$value,
         ]);
@@ -39,13 +37,14 @@ class UpdateTranslationsTest extends AbstractTestCase
             'key' => $key
         ];
 
-        $status = $this->updateTrans->input('filters',$filter)
-                                           ->input('newValue',['value'=>$newValue])
+        $result = $this->updateTrans->input('filters',$filter)
+                                           ->input('value',$newValue)
                                            ->process()
-                                           ->output('status');
-        $this->assertTrue($status);
+                                           ->outputs('entity');
+
+        $this->assertFalse($result['is_new_entity']);
         $this->assertDatabaseHas('translations',[
-            'value'=>$newValue,
+            'value'=>$result['entity']->getTranslationValue(),
         ]);
     }
 }

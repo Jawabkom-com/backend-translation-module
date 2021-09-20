@@ -2,8 +2,6 @@
 
 namespace Jawabkom\Backend\Module\Translation\Test\Unit;
 
-use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
-use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
 use Jawabkom\Backend\Module\Translation\Service\SaveBulkTranslations;
 use Jawabkom\Backend\Module\Translation\Service\SaveTranslation;
 use Jawabkom\Backend\Module\Translation\Service\DeleteTranslation;
@@ -38,7 +36,7 @@ class DeleteTranslationTest extends AbstractTestCase
                         ->input('key',$key)
                         ->input('value',$value)
                         ->process()
-                        ->output('newEntity');
+                        ->output('entity');
         $filter =[
             'key'=>$newEntity->getTranslationKey()
         ];
@@ -54,7 +52,7 @@ class DeleteTranslationTest extends AbstractTestCase
     //test delete trans by group
     public function testDeleteTransByGroup(){
         list($trans, $result) = $this->factoryBulkTranslation();
-        $this->assertTrue($result);
+         $this->assertEquals(3,$result['created']);
         $filter =[
             'groupName' => $trans[0]['group_name']
         ];
@@ -84,7 +82,7 @@ class DeleteTranslationTest extends AbstractTestCase
 
         list($trans, $result) = $this->factoryBulkTranslation();
         $local = $trans[0]['language_code'];
-        $this->assertTrue($result);
+        $this->assertEquals(3,$result['created']);
         $filter =[
             'languageCode' => $local
         ];

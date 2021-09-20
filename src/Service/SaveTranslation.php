@@ -38,8 +38,7 @@ class SaveTranslation extends AbstractService {
     protected function saveTranslationRecord()
     {
         $filteredInput = $this->filterSingleTranslationInput($this->getInputs());
-
-        // check if entity already exists
+         // check if entity already exists
         $entity = $this->translationRepository->getByKey($filteredInput['key'], $filteredInput['group_name'], $filteredInput['language_code'], $filteredInput['country_code']);
         if(!$entity) {
             $this->setOutput('is_new_entity', true);

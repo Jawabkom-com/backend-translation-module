@@ -49,14 +49,13 @@ class SaveBulkTranslations extends AbstractService
             'failed' => 0
         ];
         foreach($filteredInputs as $filteredInput) {
-
             // check if entity already saved
             $isNewEntity = false;
             $entity = $this->translationRepository->getByKey($filteredInput['key'], $filteredInput['group_name'], $filteredInput['language_code'], $filteredInput['country_code']);
-
             // if not exists then create a new one
             if(!$entity) {
                 $isNewEntity = true;
+                $entity      = $this->translationRepository->createEntity();
                 $this->fillEntityObjectUsingFilteredInput($entity, $filteredInput);
             }
 

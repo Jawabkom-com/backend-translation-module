@@ -24,13 +24,15 @@ class GetTranslationsByFilter extends AbstractService
     //
     public function process(): static
     {
-        $page = $this->getInput('page', 1);
-        $perPage = $this->getInput('perPage', 0);
+        $page         = $this->getInput('page', 1);
+        $perPage      = $this->getInput('perPage', 0);
         $filtersInput = $this->getInput('filters', []);
         $orderByInput = $this->getInput('orderBy', []);
+
         $this->validateFilters($filtersInput);
         $compositeAndFilter = $this->buildCompositeFilterObject($filtersInput);
-        $orderBy   = $this->buildCompositeOrderByObject($orderByInput);
+         $orderBy   = $this->buildCompositeOrderByObject($orderByInput);
+
         $this->setOutput('translations', $this->translationRepository->getByFilters($compositeAndFilter,$orderBy, $page, $perPage));
         return $this;
     }

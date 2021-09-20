@@ -38,7 +38,7 @@ class AddNewTranslationTest extends AbstractTestCase
                           ->input('key',$key)
                           ->input('value',$value)
                           ->process()
-                          ->output('newEntity');
+                          ->output('entity');
         $this->assertInstanceOf(ITranslationEntity::class,$newEntity);
     }
 
@@ -49,7 +49,7 @@ class AddNewTranslationTest extends AbstractTestCase
         $result = $this->addNewTrans->input('language_code',$languageCode)
                           ->input('key',$key)
                           ->input('value',$value)
-                          ->process()->output('newEntity');
+                          ->process()->output('entity');
         $this->assertInstanceOf(ITranslationEntity::class,$result);
 
     }
@@ -95,7 +95,7 @@ class AddNewTranslationTest extends AbstractTestCase
                            ->input('key',$key)
                            ->input('value',$value)
                            ->process()
-                           ->output('newEntity');
+                           ->output('entity');
         $this->assertInstanceOf(ITranslationEntity::class,$newEntity);
         $this->assertEquals(strtolower($key), $newEntity->getTranslationKey());
     }
@@ -112,7 +112,7 @@ class AddNewTranslationTest extends AbstractTestCase
                            ->input('key',$key)
                            ->input('value',$value)
                            ->process()
-                           ->output('newEntity');
+                           ->output('entity');
     }
 
     public function testLanguageCodeInputLengthLessThanRequiredLength(){
@@ -128,6 +128,6 @@ class AddNewTranslationTest extends AbstractTestCase
                            ->input('key',$key)
                            ->input('value',$value)
                            ->process()
-                           ->output('newEntity');
+                           ->output('entity');
     }
 }
