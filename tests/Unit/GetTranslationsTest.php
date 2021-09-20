@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Translation\Test\Unit;
 
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
+use Jawabkom\Backend\Module\Translation\Exception\FilterNameDoesNotExistsException;
 use Jawabkom\Backend\Module\Translation\Service\AddBulkTranslations;
 use Jawabkom\Backend\Module\Translation\Service\GetTranslationsByFilter;
 use Jawabkom\Backend\Module\Translation\Test\AbstractTestCase;
@@ -105,6 +106,19 @@ class GetTranslationsTest extends AbstractTestCase
         $result    = $this->trans->input('filters',$filter)
                                  ->input('orderBy',$orderBy)
                                  ->process()
+                                 ->output('translations');
+        $this->assertIsArray($result);
+        $this->assertNotEmpty($result);
+        $this->assertInstanceOf(ITranslationRepository::class,$result[0]);
+    }
+    //test filter with more one filter
+    public function testFilterNotExitsColumn(){
+         $filter =[
+            'languageCodexxxxx' => 'dsajdokljaslkdas',
+          ];
+         $this->expectException(FilterNameDoesNotExistsException::class);
+         $result    = $this->trans->input('filters',$filter)
+                                  ->process()
                                  ->output('translations');
         $this->assertIsArray($result);
         $this->assertNotEmpty($result);
