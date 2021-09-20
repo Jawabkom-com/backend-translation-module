@@ -1,4 +1,5 @@
 vendor
 .idea
-report
+/report
+/html-coverage
 .phpunit.result.cache
