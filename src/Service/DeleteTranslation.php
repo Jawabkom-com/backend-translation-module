@@ -35,14 +35,13 @@ class DeleteTranslation extends AbstractService {
      */
     private function deleteByArray(array $records): array
     {
-        return array_map(function ($record) {
-            $idR = $record->id;
-            try {
-               $this->translationRepository->deleteEntity($record);
-                return [$idR => true];
-            } catch (\Throwable $exception) {
-                 return [$idR => false];
-            }
-        }, $records);
+        $status =[];
+        if ($records){
+            foreach ($records as $record){
+                $status[] = $this->translationRepository->deleteEntity($record);
+             }
+            return $status;
+        }
+        return $status;
     }
 }

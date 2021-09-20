@@ -48,8 +48,8 @@ class DeleteTranslationTest extends AbstractTestCase
         $this->assertDatabaseMissing('translations',[
             'key'=>$newEntity->getTranslationKey()
         ]);
-        $this->assertIsArray($deleteStatus[0]);
-        $this->assertNotEmpty($deleteStatus[0]);
+        $this->assertIsArray($deleteStatus);
+        $this->assertNotEmpty($deleteStatus);
     }
     //test delete trans by group
     public function testDeleteTransByGroup(){
@@ -61,9 +61,22 @@ class DeleteTranslationTest extends AbstractTestCase
         $deleteStatus = $this->deleteTransService->input('filters',$filter)
                                                  ->process()
                                                  ->output('status');
-        $this->assertIsArray($deleteStatus);
+         $this->assertIsArray($deleteStatus);
         $this->assertDatabaseMissing('translations',[
             "groupName"=> $trans[0]['group_name']
+        ]);
+    }
+    public function testDeleteNotExists(){
+        $filter =[
+            'groupName' => 'ksdajfksdjf'
+        ];
+        $deleteStatus = $this->deleteTransService->input('filters',$filter)
+                                                 ->process()
+                                                 ->output('status');
+         $this->assertIsArray($deleteStatus);
+         $this->assertEmpty($deleteStatus);
+        $this->assertDatabaseMissing('translations',[
+            "groupName"=> 'ksdajfksdjf'
         ]);
     }
     //test delete trans by language code
