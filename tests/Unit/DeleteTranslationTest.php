@@ -4,8 +4,8 @@ namespace Jawabkom\Backend\Module\Translation\Test\Unit;
 
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
-use Jawabkom\Backend\Module\Translation\Service\AddBulkTranslations;
-use Jawabkom\Backend\Module\Translation\Service\AddNewTranslation;
+use Jawabkom\Backend\Module\Translation\Service\SaveBulkTranslations;
+use Jawabkom\Backend\Module\Translation\Service\SaveTranslation;
 use Jawabkom\Backend\Module\Translation\Service\DeleteTranslation;
 use Jawabkom\Backend\Module\Translation\Test\AbstractTestCase;
 
@@ -19,8 +19,8 @@ class DeleteTranslationTest extends AbstractTestCase
     {
         parent::setUp();
         $this->deleteTransService = $this->app->make(DeleteTranslation::class);
-        $this->addTransService    = $this->app->make(AddNewTranslation::class);
-        $this->bulkTrans          = $this->app->make(AddBulkTranslations::class);
+        $this->addTransService    = $this->app->make(SaveTranslation::class);
+        $this->bulkTrans          = $this->app->make(SaveBulkTranslations::class);
 
     }
 

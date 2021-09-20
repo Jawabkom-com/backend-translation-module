@@ -7,7 +7,7 @@ use Jawabkom\Backend\Module\Translation\Trait\AddTranslationTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 
-class AddBulkTranslations extends AbstractService
+class SaveBulkTranslations extends AbstractService
 {
 
     use AddTranslationTrait;
@@ -42,9 +42,36 @@ class AddBulkTranslations extends AbstractService
 
     protected function addBulkTranslation()
     {
-        $filterInputs = $this->filterInputFormat();
-        $insertStatus = $this->translationRepository->insertBulk($filterInputs);
-        $this->setOutput('status', $insertStatus);
+        $filteredInputs = $this->filterInputFormat();
+        $status = [
+            'created' => 0,
+            'updated' => 0,
+            'failed' => 0
+        ];
+        foreach($filteredInputs as $filteredInput) {
+
+            // check if entity already saved
+            $isNewEntity = false;
+            $entity = $this->translationRepository->getByKey($filteredInput['key'], $filteredInput['group_name'], $filteredInput['language_code'], $filteredInput['country_code']);
+
+            // if not exists then create a new one
+            if(!$entity) {
+                $isNewEntity = true;
+                $this->fillEntityObjectUsingFilteredInput($entity, $filteredInput);
+            }
+
+            if($this->translationRepository->saveEntity($entity)) {
+                if($isNewEntity) {
+                    $status['created']++;
+                } else {
+                    $status['updated']++;
+                }
+            } else {
+                $status['failed']++;
+            }
+        }
+
+        $this->setOutput('status', $status);
     }
 
     //

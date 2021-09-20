@@ -4,14 +4,14 @@ namespace Jawabkom\Backend\Module\Translation\Test\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
-use Jawabkom\Backend\Module\Translation\Service\AddNewTranslation;
+use Jawabkom\Backend\Module\Translation\Service\SaveTranslation;
 use Jawabkom\Backend\Module\Translation\Test\AbstractTestCase;
 use Jawabkom\Standard\Exception\InputLengthException;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class AddNewTranslationTest extends AbstractTestCase
 {
-    protected AddNewTranslation $addNewTrans;
+    protected SaveTranslation $addNewTrans;
     private string $countryCode;
     private string $languageCode;
     private string $groupName;
@@ -21,7 +21,7 @@ class AddNewTranslationTest extends AbstractTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->addNewTrans = $this->app->make(AddNewTranslation::class);
+        $this->addNewTrans = $this->app->make(SaveTranslation::class);
     }
 
     use RefreshDatabase;

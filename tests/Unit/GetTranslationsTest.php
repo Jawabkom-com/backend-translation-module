@@ -4,7 +4,7 @@ namespace Jawabkom\Backend\Module\Translation\Test\Unit;
 
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
 use Jawabkom\Backend\Module\Translation\Exception\FilterNameDoesNotExistsException;
-use Jawabkom\Backend\Module\Translation\Service\AddBulkTranslations;
+use Jawabkom\Backend\Module\Translation\Service\SaveBulkTranslations;
 use Jawabkom\Backend\Module\Translation\Service\GetTranslationsByFilter;
 use Jawabkom\Backend\Module\Translation\Test\AbstractTestCase;
 
@@ -17,7 +17,7 @@ class GetTranslationsTest extends AbstractTestCase
     {
         parent::setUp();
         $this->trans = $this->app->make(GetTranslationsByFilter::class);
-        $this->addBulkTrans = $this->app->make(AddBulkTranslations::class);
+        $this->addBulkTrans = $this->app->make(SaveBulkTranslations::class);
     }
 
     //test list sll Translation

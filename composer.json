@@ -8,15 +8,13 @@
         }
     ],
     "require": {
-        "php": ">=8.0"
+        "php": ">=8.0",
+        "jawabkom-com/jawabkom-standards": "^0.0.0"
     },
     "autoload": {
         "psr-4": {
             "Jawabkom\\Backend\\Module\\Translation\\": "src/",
-            "Jawabkom\\Backend\\Module\\Translation\\Test\\": "tests/",
-            "Jawabkom\\Standard\\Abstract\\": "Abstract/",
-            "Jawabkom\\Standard\\Contract\\": "Contract/",
-            "Jawabkom\\Standard\\Exception\\": "Exception/"
+            "Jawabkom\\Backend\\Module\\Translation\\Test\\": "tests/"
         }
     },
     "description": "",

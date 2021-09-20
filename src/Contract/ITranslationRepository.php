@@ -12,12 +12,10 @@ interface ITranslationRepository extends IRepository {
 
     public function createEntity(array $params = []): IEntity|ITranslationEntity;
 
-    public function getByFilters(IFilterComposite $filterComposite = null, array $orderBy = [], $page = 1, $perPage=0):mixed;
+    public function getByFilters(IFilterComposite $filterComposite = null, array $orderBy = [], $page = 1, $perPage=0):iterable;
 
-    public function deleteEntity(mixed $entity):bool;
+    public function deleteEntity(ITranslationEntity|IEntity $entity):bool;
 
-    public function truncateTranslations():bool;
-
-    public function updateEntity($entity,array $params):bool;
+    public function getByKey(string $key, string $group = '', string $language = '', string $countryCode = ''): IEntity|ITranslationEntity|null;
 
 }

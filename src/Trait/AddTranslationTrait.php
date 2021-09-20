@@ -2,6 +2,7 @@
 
 namespace Jawabkom\Backend\Module\Translation\Trait;
 
+use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
 use Jawabkom\Standard\Exception\InputLengthException;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
@@ -47,6 +48,15 @@ trait AddTranslationTrait
             'value' => $translationInput['value'],
             'group_name' => trim(strtolower($translationInput['group_name'] ?? '')),
         ];
+    }
+
+    protected function fillEntityObjectUsingFilteredInput(ITranslationEntity $newEntity, array $filterInputs): void
+    {
+        $newEntity->setLanguageCode($filterInputs['language_code']);
+        $newEntity->setTranslationKey($filterInputs['key']);
+        $newEntity->setTranslationValue($filterInputs['value']);
+        $newEntity->setTranslationGroupName($filterInputs['group_name'] ?? '');
+        $newEntity->setCountryCode(trim(strtoupper($filterInputs['country_code'] ?? '')));
     }
 
 }

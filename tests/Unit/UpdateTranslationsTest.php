@@ -3,7 +3,7 @@
 namespace Jawabkom\Backend\Module\Translation\Test\Unit;
 
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
-use Jawabkom\Backend\Module\Translation\Service\AddNewTranslation;
+use Jawabkom\Backend\Module\Translation\Service\SaveTranslation;
 use Jawabkom\Backend\Module\Translation\Service\UpdateTranslations;
 use Jawabkom\Backend\Module\Translation\Test\AbstractTestCase;
 
@@ -23,7 +23,7 @@ class UpdateTranslationsTest extends AbstractTestCase
         $key          = 'projectName';
         $value        = 'translationPackage';
 
-        $addNewTrans = $this->app->make(AddNewTranslation::class);
+        $addNewTrans = $this->app->make(SaveTranslation::class);
         $result = $addNewTrans->input('language_code',$languageCode)
                               ->input('key',$key)
                               ->input('value',$value)

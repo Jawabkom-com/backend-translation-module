@@ -82,10 +82,10 @@ class TranslationRepository extends AbstractTranslation implements ITranslationR
        return $this->where('value',$value)->first();
     }
 
-    public function getByFilters(IFilterComposite $filterComposite = null, array $orderBy = [], $page = 1, $perPage = 0): mixed
+    public function getByFilters(IFilterComposite $filterComposite = null, array $orderBy = [], $page = 1, $perPage = 0): iterable
     {
-        $builder = new static;
-        $builder = $this->filtersToWhereCondition($filterComposite, $builder);
+        $builder = static::query();
+        $this->filtersToWhereCondition($filterComposite, $builder);
            if ($perPage){
             return  $builder->paginate($perPage);
           }
@@ -112,7 +112,6 @@ class TranslationRepository extends AbstractTranslation implements ITranslationR
                 }
             }
         }
-        return $query;
     }
 
 }

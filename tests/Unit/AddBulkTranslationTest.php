@@ -2,18 +2,18 @@
 
 namespace Jawabkom\Backend\Module\Translation\Test\Unit;
 
-use Jawabkom\Backend\Module\Translation\Service\AddBulkTranslations;
+use Jawabkom\Backend\Module\Translation\Service\SaveBulkTranslations;
 use Jawabkom\Backend\Module\Translation\Test\AbstractTestCase;
 use Jawabkom\Standard\Exception\InputLengthException;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class AddBulkTranslationTest extends AbstractTestCase
 {
-    protected AddBulkTranslations $bulkTrans;
+    protected SaveBulkTranslations $bulkTrans;
     public function setUp(): void
     {
         parent::setUp();
-        $this->bulkTrans = $this->app->make(AddBulkTranslations::class);
+        $this->bulkTrans = $this->app->make(SaveBulkTranslations::class);
     }
     /** @test */
     //add bulk translation
