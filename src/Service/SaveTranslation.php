@@ -2,7 +2,6 @@
 
 namespace Jawabkom\Backend\Module\Translation\Service;
 
-use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
 use Jawabkom\Backend\Module\Translation\Trait\AddTranslationTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
