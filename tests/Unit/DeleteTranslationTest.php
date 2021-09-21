@@ -84,7 +84,7 @@ class DeleteTranslationTest extends AbstractTestCase
         $local = $trans[0]['language_code'];
         $this->assertEquals(3,$result['created']);
         $filter =[
-            'languageCode' => $local
+            'language_code' => $local
         ];
 
          $deleteStatus = $this->deleteTransService->input('filters',$filter)
@@ -92,7 +92,7 @@ class DeleteTranslationTest extends AbstractTestCase
                                                   ->output('status');
         $this->assertIsArray($deleteStatus);
         $this->assertDatabaseMissing('translations',[
-            "languageCode"=> $local
+            "language_code"=> $local
         ]);
     }
     //test try call method not exists
