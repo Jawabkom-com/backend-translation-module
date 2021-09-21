@@ -36,7 +36,9 @@ class GetTranslationsTest extends AbstractTestCase
         $filter =[
           'groupName'=>$dummyData['data'][0]['group_name']
         ];
+
         $result    = $this->trans->input('filters',$filter)->process()->output('translations');
+
         $this->assertIsArray($result);
         $this->assertNotEmpty($result);
         $this->assertInstanceOf(ITranslationRepository::class,$result[0]);
@@ -44,8 +46,8 @@ class GetTranslationsTest extends AbstractTestCase
     //test list by key
     public function testGetTransByKey(){
         $dummyData = $this->factoryBulkTranslation();
-        $filter =[
-            'key'=>$dummyData['data'][0]['key']
+        $filter = [
+            'key' => $dummyData['data'][0]['key']
         ];
 
         $result    = $this->trans->input('filters',$filter)->process()->output('translations');
