@@ -4,16 +4,17 @@ namespace Jawabkom\Backend\Module\Translation\Test\Unit;
 
 use Jawabkom\Backend\Module\Translation\Service\SaveBulkTranslations;
 use Jawabkom\Backend\Module\Translation\Test\AbstractTestCase;
+use Jawabkom\Backend\Module\Translation\Test\Classes\TranslationRepository;
 use Jawabkom\Standard\Exception\InputLengthException;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class AddBulkTranslationTest extends AbstractTestCase
 {
-    protected SaveBulkTranslations $bulkTrans;
+    protected SaveBulkTranslations $saveBulkTrans;
     public function setUp(): void
     {
         parent::setUp();
-        $this->bulkTrans = $this->app->make(SaveBulkTranslations::class);
+        $this->saveBulkTrans = $this->app->make(SaveBulkTranslations::class);
     }
     /** @test */
     //add bulk translation
@@ -28,7 +29,7 @@ class AddBulkTranslationTest extends AbstractTestCase
                 'country_code'=>'ps'
             ];
         }
-      $result = $this->bulkTrans->inputs($trans)->process()->output('status');
+      $result = $this->saveBulkTrans->inputs($trans)->process()->output('status');
       $this->assertDatabaseHas('translations',[
             "key"=>"project-1"
       ]);
@@ -45,7 +46,7 @@ class AddBulkTranslationTest extends AbstractTestCase
                 'value'=>"translate_model-{$i}",
             ];
         }
-        $result = $this->bulkTrans->inputs($trans)->process()->output('status');
+        $result = $this->saveBulkTrans->inputs($trans)->process()->output('status');
         $this->assertDatabaseHas('translations',[
             "key"=>"project-1"
         ]);
@@ -63,7 +64,7 @@ class AddBulkTranslationTest extends AbstractTestCase
             ];
         }
         $this->expectException(InputLengthException::class);
-       $this->bulkTrans->inputs($trans)->process()->output('status');
+       $this->saveBulkTrans->inputs($trans)->process()->output('status');
     }
     public function testCountryCodeLengthLessThanRequiredLength(){
         $trans =[];
@@ -77,7 +78,7 @@ class AddBulkTranslationTest extends AbstractTestCase
             ];
         }
         $this->expectException(InputLengthException::class);
-       $this->bulkTrans->inputs($trans)->process()->output('status');
+       $this->saveBulkTrans->inputs($trans)->process()->output('status');
     }
 
     //add bulk with missing required argument
@@ -92,8 +93,29 @@ class AddBulkTranslationTest extends AbstractTestCase
             ];
         }
         $this->expectException(MissingRequiredInputException::class);
-         $this->bulkTrans->inputs($trans)->process()->output('status');
+         $this->saveBulkTrans->inputs($trans)->process()->output('status');
 
+    }
+
+    public function testSavedArrayMethod()
+    {
+        $trns = new TranslationRepository();
+        $trns->local = 'en';
+        $trns->keyx = "project-xxx";
+        $trns->valuex = "translate_model-xxx";
+        $trns->group_namex = 'admin';
+        $trns->country_codex = 'ps';
+        $status = [
+            'created' => 0,
+            'updated' => 0,
+            'failed' => 0
+        ];
+        $method = new \ReflectionMethod($this->saveBulkTrans, 'saveOrUpdateEntity');
+        $method->setAccessible(true);
+        $status = $method->invoke($this->saveBulkTrans,true,$trns,$status);
+        $this->assertIsArray($status);
+        $this->assertIsArray($status);
+        $this->assertEquals(1, $status['failed']);
     }
     //add bulk with missing required argument
     public function testAddBulkWithMissingKeyRequiredArgument(){
@@ -107,7 +129,7 @@ class AddBulkTranslationTest extends AbstractTestCase
             ];
         }
         $this->expectException(MissingRequiredInputException::class);
-         $this->bulkTrans->inputs($trans)->process()->output('status');
+         $this->saveBulkTrans->inputs($trans)->process()->output('status');
 
     }
     //test sensitive key value at  add bulk translation
@@ -120,7 +142,7 @@ class AddBulkTranslationTest extends AbstractTestCase
                 'value'=>"translate_model-{$i}",
             ];
         }
-        $result = $this->bulkTrans->inputs($trans)->process()->output('status');
+        $result = $this->saveBulkTrans->inputs($trans)->process()->output('status');
         $this->assertDatabaseHas('translations',[
             "key"=>"project-1"
         ]);
@@ -138,7 +160,7 @@ class AddBulkTranslationTest extends AbstractTestCase
                 'country_code'=>'ps'
             ];
         }
-        $result = $this->bulkTrans->inputs($trans)->process()->output('status');
+        $result = $this->saveBulkTrans->inputs($trans)->process()->output('status');
         $this->assertDatabaseHas('translations',[
             "country_code"=>"PS"
         ]);

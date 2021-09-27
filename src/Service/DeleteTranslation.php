@@ -34,13 +34,12 @@ class DeleteTranslation extends AbstractService
     /**
      * @param array $entities
      */
-    private function deleteByArray(array $entities): array
+    private function deleteByArray(iterable $entities): array
     {
         $status = [
             'deleted' => 0,
             'failed' => 0
         ];
-        if ($entities) {
             foreach ($entities as $entity) {
                 if ($this->translationRepository->deleteEntity($entity)) {
                     $status['deleted']++;
@@ -48,7 +47,6 @@ class DeleteTranslation extends AbstractService
                     $status['failed']++;
                 }
             }
-        }
         return $status;
     }
 }

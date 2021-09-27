@@ -73,7 +73,7 @@ class TranslationRepository extends AbstractTranslation implements IEntity, ITra
 
     public function saveEntity(ITranslationEntity|IEntity $entity): bool
     {
-        return $entity->save();
+        return (bool)$entity->save();
     }
 
     public function insertBulk(array $params)
@@ -93,7 +93,7 @@ class TranslationRepository extends AbstractTranslation implements IEntity, ITra
 
     public function deleteEntity(mixed $entity): bool
     {
-        return $entity->delete();
+        return (bool)$entity->delete();
     }
 
     public function allTranslations(): array

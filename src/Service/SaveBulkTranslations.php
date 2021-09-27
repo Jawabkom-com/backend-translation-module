@@ -2,10 +2,12 @@
 
 namespace Jawabkom\Backend\Module\Translation\Service;
 
+use Jawabkom\Backend\Module\Translation\Contract\ITranslationEntity;
 use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
 use Jawabkom\Backend\Module\Translation\Trait\AddTranslationTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
+use Jawabkom\Standard\Contract\IEntity;
 
 class SaveBulkTranslations extends AbstractService
 {
@@ -53,23 +55,13 @@ class SaveBulkTranslations extends AbstractService
             $isNewEntity = false;
             $entity = $this->translationRepository->getByKey($filteredInput['key'], $filteredInput['group_name'], $filteredInput['language_code'], $filteredInput['country_code']);
             // if not exists then create a new one
-            if(!$entity) {
+            if (!$entity) {
                 $isNewEntity = true;
-                $entity      = $this->translationRepository->createEntity();
+                $entity = $this->translationRepository->createEntity();
                 $this->fillEntityObjectUsingFilteredInput($entity, $filteredInput);
             }
-
-            if($this->translationRepository->saveEntity($entity)) {
-                if($isNewEntity) {
-                    $status['created']++;
-                } else {
-                    $status['updated']++;
-                }
-            } else {
-                $status['failed']++;
-            }
+            $status = $this->saveOrUpdateEntity($isNewEntity, $entity,$status);
         }
-
         $this->setOutput('status', $status);
     }
 
@@ -85,4 +77,25 @@ class SaveBulkTranslations extends AbstractService
         return $filteredInput;
     }
 
+    /**
+     * @param bool $isNewEntity
+     * @param ITranslationEntity|IEntity|null $entity
+     * @param array $status
+     * @return array
+     */
+    protected function saveOrUpdateEntity(bool $isNewEntity, ITranslationEntity|IEntity|null $entity, array $status): array
+    {
+        try {
+            $this->translationRepository->saveEntity($entity);
+            if ($isNewEntity) {
+                $status['created']++;
+            } else {
+                $status['updated']++;
+            }
+
+        } catch (\Throwable $exception) {
+            $status['failed']++;
+        }
+        return $status;
+    }
 }

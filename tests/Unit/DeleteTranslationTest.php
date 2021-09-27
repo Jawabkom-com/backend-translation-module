@@ -6,6 +6,9 @@ use Jawabkom\Backend\Module\Translation\Service\SaveBulkTranslations;
 use Jawabkom\Backend\Module\Translation\Service\SaveTranslation;
 use Jawabkom\Backend\Module\Translation\Service\DeleteTranslation;
 use Jawabkom\Backend\Module\Translation\Test\AbstractTestCase;
+use Jawabkom\Backend\Module\Translation\Test\Classes\AbstractTranslation;
+use Jawabkom\Backend\Module\Translation\Test\Classes\TranslationRepository;
+use Mockery\Mock;
 
 class DeleteTranslationTest extends AbstractTestCase
 {
@@ -49,7 +52,23 @@ class DeleteTranslationTest extends AbstractTestCase
         ]);
         $this->assertIsArray($deleteStatus);
         $this->assertNotEmpty($deleteStatus);
+    }    //test faild delete trans by key
+
+    public function testDeletedArrayMethod()
+    {
+        $trns = new TranslationRepository();
+        $trns->language_code = 'en';
+        $trns->key = "project-xxx";
+        $trns->value = "translate_model-xxx";
+        $trns->group_name = 'admin';
+        $trns->country_code = 'ps';
+        $method = new \ReflectionMethod($this->deleteTransService, 'deleteByArray');
+        $method->setAccessible(true);
+        $status = $method->invoke($this->deleteTransService,[$trns]);
+        $this->assertIsArray($status);
+        $this->assertEquals(1,$status['failed']);
     }
+
 
     //test delete trans by group
     public function testDeleteTransByGroup()
