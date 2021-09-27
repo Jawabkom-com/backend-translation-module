@@ -25,8 +25,8 @@ class DeleteTranslation extends AbstractService
         $filtersInput = $this->getInput('filters', []);
         $this->validateFilters($filtersInput);
         $compositeAndFilter = $this->buildCompositeFilterObject($filtersInput);
-        $records = $this->translationRepository->getByFilters($compositeAndFilter);
-        $recordsDeleteStatus = $this->deleteByArray($records);
+        $entities = $this->translationRepository->getByFilters($compositeAndFilter);
+        $recordsDeleteStatus = $this->deleteByArray($entities);
         $this->setOutput('status', $recordsDeleteStatus);
         return $this;
     }

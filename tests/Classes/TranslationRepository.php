@@ -135,7 +135,7 @@ class TranslationRepository extends AbstractTranslation implements IEntity, ITra
         return $this->where('value', $value)->first();
     }
 
-    public function getByFilters(IFilterComposite $filterComposite = null, array $orderBy = [], $page = 1, $perPage = 0): iterable
+    public function getByFilters(IFilterComposite $filterComposite = null, array $orderBy = [], int $page = 1, int $perPage = 0): iterable
     {
         $builder = static::query();
         $this->filtersToWhereCondition($filterComposite, $builder);
