@@ -57,21 +57,21 @@ class DeleteTranslationTest extends AbstractTestCase
         list($trans, $result) = $this->factoryBulkTranslation();
         $this->assertEquals(3, $result['created']);
         $filter = [
-            'groupName' => $trans[0]['group_name']
+            'group_name' => $trans[0]['group_name']
         ];
         $deleteStatus = $this->deleteTransService->input('filters', $filter)
             ->process()
             ->output('status');
         $this->assertIsArray($deleteStatus);
         $this->assertDatabaseMissing('translations', [
-            "groupName" => $trans[0]['group_name']
+            "group_name" => $trans[0]['group_name']
         ]);
     }
 
     public function testDeleteNotExists()
     {
         $filter = [
-            'groupName' => 'ksdajfksdjf'
+            'group_name' => 'ksdajfksdjf'
         ];
         $deleteStatus = $this->deleteTransService->input('filters', $filter)
             ->process()
@@ -80,7 +80,7 @@ class DeleteTranslationTest extends AbstractTestCase
         $this->assertEmpty($deleteStatus['deleted']);
         $this->assertEmpty($deleteStatus['failed']);
         $this->assertDatabaseMissing('translations', [
-            "groupName" => 'ksdajfksdjf'
+            "group_name" => 'ksdajfksdjf'
         ]);
     }
 

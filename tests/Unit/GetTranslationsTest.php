@@ -34,7 +34,7 @@ class GetTranslationsTest extends AbstractTestCase
     public function testListTransByGroupName(){
         $dummyData = $this->factoryBulkTranslation();
         $filter =[
-          'groupName'=>$dummyData['data'][0]['group_name']
+          'group_name'=>$dummyData['data'][0]['group_name']
         ];
 
         $result    = $this->trans->input('filters',$filter)->process()->output('translations');
@@ -72,7 +72,7 @@ class GetTranslationsTest extends AbstractTestCase
     public function testListTransByLocal(){
         $dummyData = $this->factoryBulkTranslation();
         $filter =[
-            'languageCode' => $dummyData['data'][0]['language_code']
+            'language_code' => $dummyData['data'][0]['language_code']
         ];
 
         $result    = $this->trans->input('filters',$filter)->process()->output('translations');
@@ -84,7 +84,7 @@ class GetTranslationsTest extends AbstractTestCase
     public function testFilterWithMoreOneFilter(){
         $dummyData = $this->factoryBulkTranslation();
         $filter =[
-            'languageCode' => $dummyData['data'][0]['language_code'],
+            'language_code' => $dummyData['data'][0]['language_code'],
             'key'          => $dummyData['data'][0]['key'],
             'value'        => $dummyData['data'][0]['value']
         ];
@@ -98,12 +98,12 @@ class GetTranslationsTest extends AbstractTestCase
     public function testFilterWithOrderByCreatedByDec(){
         $dummyData = $this->factoryBulkTranslation(40);
         $filter =[
-            'languageCode' => $dummyData['data'][0]['language_code'],
+            'language_code' => $dummyData['data'][0]['language_code'],
             'key'          => $dummyData['data'][0]['key'],
             'value'        => $dummyData['data'][0]['value'],
          ];
         $orderBy =[
-          'createdAt' => 'desc'
+          'created_at' => 'desc'
         ];
         $result    = $this->trans->input('filters',$filter)
                                  ->input('orderBy',$orderBy)
@@ -131,19 +131,20 @@ class GetTranslationsTest extends AbstractTestCase
     public function testFilteringWithAllOptionalAndPaginate(){
         $dummyData = $this->factoryBulkTranslation(30);
         $filter =[
-            'languageCode' => $dummyData['data'][0]['language_code']
+            'language_code' => $dummyData['data'][0]['language_code']
         ];
         $perPage     = 5;
         $currentPage = 1;
         $result    = $this->trans->input('filter',$filter)->input('page',$currentPage)->input('perPage',$perPage)->process()->output('translations');
-        $this->assertCount(5,$result);
+        $pager     = $result[0]->paginate(5);
+        $this->assertCount(5,$pager);
         $this->assertDatabaseHas('translations',[
             'key'=>'project-29'
         ]);
-        $this->assertEquals($perPage,$result->perPage());
-        $this->assertEquals($currentPage,$result->currentPage());
-        $this->assertNotEmpty($result->all());
-        $this->assertInstanceOf(ITranslationRepository::class,$result->all()[0]);
+        $this->assertEquals($perPage,$pager->perPage());
+        $this->assertEquals($currentPage,$pager->currentPage());
+        $this->assertNotEmpty($pager->all());
+        $this->assertInstanceOf(ITranslationRepository::class,$pager->all()[0]);
     }
     private function factoryBulkTranslation(int $intx =3): array
     {

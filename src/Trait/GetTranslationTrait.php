@@ -9,7 +9,7 @@ use Jawabkom\Standard\Contract\IOrderBy;
 
 trait GetTranslationTrait
 {
-    protected  array $filterNames = ['groupName', 'languageCode', 'countryCode', 'key', 'value','createdAt','updatedAt'];
+    protected  array $filterNames = ['group_name', 'language_code', 'country_code', 'key', 'value','created_at','updated_at'];
 
     //
     // LEVEL 1
