@@ -12,7 +12,14 @@ interface ITranslationRepository extends IRepository {
 
     public function createEntity(array $params = []): IEntity|ITranslationEntity;
 
-    public function getByFilters(IFilterComposite $filterComposite = null, array $orderBy = [], $page = 1, $perPage=0):iterable;
+    /**
+     * @param IFilterComposite|null $filterComposite
+     * @param array $orderBy
+     * @param int $page
+     * @param int $perPage
+     * @return ITranslationEntity[]
+     */
+    public function getByFilters(IFilterComposite $filterComposite = null, array $orderBy = [], int $page = 1, int $perPage=0):iterable;
 
     public function deleteEntity(ITranslationEntity|IEntity $entity):bool;
 
