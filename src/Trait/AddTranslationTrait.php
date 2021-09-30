@@ -44,8 +44,8 @@ trait AddTranslationTrait
         return [
             'key' => trim(strtolower($translationInput['key'])),
             'country_code' => trim(strtoupper($translationInput['country_code'] ?? '')),
-            'language_code' => trim(strtolower($translationInput['language_code'])),
-            'value' => $translationInput['value'],
+            'language_code' => trim(strtolower($translationInput['language_code']??'')),
+            'value' => $translationInput['value']??'',
             'group_name' => trim(strtolower($translationInput['group_name'] ?? '')),
         ];
     }

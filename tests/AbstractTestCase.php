@@ -2,6 +2,7 @@
 
 namespace Jawabkom\Backend\Module\Translation\Test;
 
+use Jawabkom\Backend\Module\Translation\Service\SaveBulkTranslations;
 use Jawabkom\Backend\Module\Translation\Test\Classes\Provider\TranslationServiceProvider;
 use Orchestra\Testbench\TestCase as TestCaseAlisa;
 
@@ -43,5 +44,23 @@ class AbstractTestCase extends TestCaseAlisa
         }
 
     }
+
+    protected function factoryBulkTranslation(int $intx =3): array
+    {
+        $trans = [];
+        for ($i = 0; $i < $intx; $i++) {
+            $trans[] = [
+                'language_code' => 'en',
+                'key' => "project-{$i}",
+                'value' => "translate_model-{$i}",
+                'group_name' => 'admin',
+                'country_code' => 'ps'
+            ];
+        }
+        $addBulkTrans = $this->app->make(SaveBulkTranslations::class);
+        $result       = $addBulkTrans->inputs($trans)->process()->output('status');
+        return array($trans,$result);
+    }
+
 
 }

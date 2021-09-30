@@ -6,7 +6,6 @@ use Jawabkom\Backend\Module\Translation\Service\SaveBulkTranslations;
 use Jawabkom\Backend\Module\Translation\Service\SaveTranslation;
 use Jawabkom\Backend\Module\Translation\Service\DeleteTranslation;
 use Jawabkom\Backend\Module\Translation\Test\AbstractTestCase;
-use Jawabkom\Backend\Module\Translation\Test\Classes\AbstractTranslation;
 use Jawabkom\Backend\Module\Translation\Test\Classes\TranslationRepository;
 use Mockery\Mock;
 
@@ -132,24 +131,5 @@ class DeleteTranslationTest extends AbstractTestCase
             ->process()
             ->output('status');
 
-    }
-
-    /**
-     * @return array
-     */
-    private function factoryBulkTranslation(): array
-    {
-        $trans = [];
-        for ($i = 0; $i < 3; $i++) {
-            $trans[] = [
-                'language_code' => 'en',
-                'key' => "project-{$i}",
-                'value' => "translate_model-{$i}",
-                'group_name' => 'admin',
-                'country_code' => 'ps'
-            ];
-        }
-        $result = $this->bulkTrans->inputs($trans)->process()->output('status');
-        return array($trans, $result);
     }
 }

@@ -33,12 +33,12 @@ class GetTranslationsTest extends AbstractTestCase
     //test list by group name
     public function testListTransByGroupName(){
         $dummyData = $this->factoryBulkTranslation();
+
         $filter =[
-          'group_name'=>$dummyData['data'][0]['group_name']
+          'group_name'=>$dummyData[0][0]['group_name']
         ];
 
         $result    = $this->trans->input('filters',$filter)->process()->output('translations');
-
         $this->assertIsArray($result);
         $this->assertNotEmpty($result);
         $this->assertInstanceOf(ITranslationRepository::class,$result[0]);
@@ -47,32 +47,32 @@ class GetTranslationsTest extends AbstractTestCase
     public function testGetTransByKey(){
         $dummyData = $this->factoryBulkTranslation();
         $filter = [
-            'key' => $dummyData['data'][0]['key']
+            'key' => $dummyData[0][0]['key']
         ];
 
         $result    = $this->trans->input('filters',$filter)->process()->output('translations');
 
         $this->assertNotEmpty($result);
         $this->assertInstanceOf(ITranslationRepository::class,$result[0]);
-        $this->assertEquals($dummyData['data'][0]['key'],$result[0]->key);
+        $this->assertEquals($dummyData[0][0]['key'],$result[0]->key);
     }
 
     //test list by key
     public function testGetTransByValue(){
         $dummyData = $this->factoryBulkTranslation();
         $filter =[
-            'value' => $dummyData['data'][0]['value']
+            'value' => $dummyData[0][0]['value']
         ];
         $result    = $this->trans->input('filters',$filter)->process()->output('translations');
         $this->assertNotEmpty($result);
         $this->assertInstanceOf(ITranslationRepository::class,$result[0]);
-        $this->assertEquals($dummyData['data'][0]['value'],$result[0]->value);
+        $this->assertEquals($dummyData[0][0]['value'],$result[0]->value);
     }
     //test list local
     public function testListTransByLocal(){
         $dummyData = $this->factoryBulkTranslation();
         $filter =[
-            'language_code' => $dummyData['data'][0]['language_code']
+            'language_code' => $dummyData[0][0]['language_code']
         ];
 
         $result    = $this->trans->input('filters',$filter)->process()->output('translations');
@@ -84,9 +84,9 @@ class GetTranslationsTest extends AbstractTestCase
     public function testFilterWithMoreOneFilter(){
         $dummyData = $this->factoryBulkTranslation();
         $filter =[
-            'language_code' => $dummyData['data'][0]['language_code'],
-            'key'          => $dummyData['data'][0]['key'],
-            'value'        => $dummyData['data'][0]['value']
+            'language_code' => $dummyData[0][0]['language_code'],
+            'key'          => $dummyData[0][0]['key'],
+            'value'        => $dummyData[0][0]['value']
         ];
 
         $result    = $this->trans->input('filters',$filter)->process()->output('translations');
@@ -98,9 +98,9 @@ class GetTranslationsTest extends AbstractTestCase
     public function testFilterWithOrderByCreatedByDec(){
         $dummyData = $this->factoryBulkTranslation(40);
         $filter =[
-            'language_code' => $dummyData['data'][0]['language_code'],
-            'key'          => $dummyData['data'][0]['key'],
-            'value'        => $dummyData['data'][0]['value'],
+            'language_code' => $dummyData[0][0]['language_code'],
+            'key'          => $dummyData[0][0]['key'],
+            'value'        => $dummyData[0][0]['value'],
          ];
         $orderBy =[
           'created_at' => 'desc'
@@ -131,7 +131,7 @@ class GetTranslationsTest extends AbstractTestCase
     public function testFilteringWithAllOptionalAndPaginate(){
         $dummyData = $this->factoryBulkTranslation(30);
         $filter =[
-            'language_code' => $dummyData['data'][0]['language_code']
+            'language_code' => $dummyData[0][0]['language_code']
         ];
         $perPage     = 5;
         $currentPage = 1;
@@ -146,20 +146,4 @@ class GetTranslationsTest extends AbstractTestCase
         $this->assertNotEmpty($pager->all());
         $this->assertInstanceOf(ITranslationRepository::class,$pager->all()[0]);
     }
-    private function factoryBulkTranslation(int $intx =3): array
-    {
-        $trans = [];
-        for ($i = 0; $i < $intx; $i++) {
-            $trans[] = [
-                'language_code' => 'en',
-                'key' => "project-{$i}",
-                'value' => "translate_model-{$i}",
-                'group_name' => 'admin',
-                'country_code' => 'ps'
-            ];
-        }
-        $result = $this->addBulkTrans->inputs($trans)->process()->output('status');
-        return array('data'=>$trans, 'status'=>$result);
-    }
-
 }

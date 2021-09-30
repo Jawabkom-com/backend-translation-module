@@ -3,16 +3,15 @@
 namespace Jawabkom\Backend\Module\Translation\Test\Classes\Provider;
 
 use Illuminate\Support\ServiceProvider;
-use Jawabkom\Backend\Module\Translation\Contract\{ITranslationEntity,ITranslationRepository};
+use Jawabkom\Backend\Module\Translation\Contract\{IGetTranslationsByKey, ITranslationEntity, ITranslationRepository};
 use Jawabkom\Backend\Module\Translation\Test\Classes\{AbstractTranslation,
     Composite\Filter,
     Composite\Filters\AndFilterComposite,
     Composite\OrderBy,
-    Composite\OrderByComposite,
     DI,
-    TranslationEntity,
     TranslationRepository};
-use Jawabkom\Standard\Contract\{IAndFilterComposite, IDependencyInjector, IFilter, IOrderBy, IOrderByFilterComposite};
+use Jawabkom\Standard\Contract\{IAndFilterComposite, IDependencyInjector, IFilter, IOrderBy};
+use Jawabkom\Backend\Module\Translation\Service\GetTranslationsByKey;
 
 class TranslationServiceProvider extends ServiceProvider
 {

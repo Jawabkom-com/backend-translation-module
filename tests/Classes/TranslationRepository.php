@@ -139,9 +139,6 @@ class TranslationRepository extends AbstractTranslation implements IEntity, ITra
     {
         $builder = static::query();
         $this->filtersToWhereCondition($filterComposite, $builder);
- //        if ($perPage) {
-//            return $builder->paginate($perPage);
-//        }
         return $builder->get()->all();
     }
 

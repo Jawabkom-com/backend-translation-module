@@ -6,7 +6,6 @@ use Jawabkom\Backend\Module\Translation\Contract\ITranslationRepository;
 use Jawabkom\Backend\Module\Translation\Trait\GetTranslationTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
-use Jawabkom\Standard\Contract\IOrderByFilterComposite;
 
 class GetTranslationsByFilter extends AbstractService
 {
